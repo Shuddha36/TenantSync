@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// Ensure cookies are sent with requests
+axios.defaults.withCredentials = true;
+
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState(""); // For error messages
@@ -9,7 +12,6 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    // Clear error message as user types
     if (error) setError("");
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -17,7 +19,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for admin login 
+    // Hardcoded admin check
     if (form.email === "admin" && form.password === "admin") {
       setWelcome("Welcome, Admin");
       setTimeout(() => {
@@ -27,21 +29,21 @@ export default function Login() {
       return;
     }
 
-    // Validate email before sending request
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
-      setError("The email adress is not valid");
+      setError("The email address is not valid");
       setTimeout(() => setError(""), 3000);
       return;
     }
 
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", form);
-      console.log("Login response:", res.data); // Optional: Log response to verify role
+      console.log("Login response:", res.data);
       setWelcome(`Welcome, ${res.data.user.name}`);
       setTimeout(() => {
         setWelcome("");
-        // Check the user role returned from the database
+        // Check role and redirect accordingly
         if (res.data.user.role === "owner") {
           navigate("/owner-dashboard");
         } else if (res.data.user.role === "tenant") {
@@ -51,17 +53,13 @@ export default function Login() {
         }
       }, 1000);
     } catch (err) {
-      // Extract error message from the server
       const errMsg =
         err.response && err.response.data && err.response.data.message
           ? err.response.data.message.toLowerCase()
           : "";
       if (errMsg.includes("password")) {
         setError("Give the correct password");
-      } else if (
-        errMsg.includes("not registered") ||
-        errMsg.includes("no user")
-      ) {
+      } else if (errMsg.includes("not registered") || errMsg.includes("no user")) {
         setError("This email is not registered");
       } else {
         setError("Invalid credentials. Please try again.");
@@ -82,7 +80,7 @@ export default function Login() {
         position: "relative",
       }}
     >
-      {/* Floating Error Message at the Top */}
+      {/* Floating Error Message */}
       {error && (
         <div
           style={{
@@ -103,7 +101,7 @@ export default function Login() {
         </div>
       )}
 
-      {/* Floating Welcome Message at the Top */}
+      {/* Floating Welcome Message */}
       {welcome && (
         <div
           style={{
@@ -194,7 +192,7 @@ export default function Login() {
                 padding: "10px",
                 backgroundColor: "#000",
                 color: "#fff",
-                borderRadius: "9999px", // pill shape
+                borderRadius: "9999px",
                 fontSize: "14px",
                 border: "none",
                 cursor: "pointer",

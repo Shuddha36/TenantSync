@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// Ensure axios sends credentials with requests
+axios.defaults.withCredentials = true;
+
 export default function Register() {
   const [form, setForm] = useState({
     name: "",
