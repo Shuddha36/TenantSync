@@ -1,9 +1,9 @@
-const Info = require('../models/infoModel');
+const User = require('../models/User');
 const mongoose = require('mongoose');
 
 // Get all profile info
 const getAllProfiles = async (req, res) => {
-    const info = await Info.find({}).sort({ createdAt: -1 });
+    const info = await User.find({}).sort({ createdAt: -1 });
     res.status(200).json(info);
 }
 
@@ -16,7 +16,7 @@ const getProfile = async (req, res) => {
         return res.status(404).json({ error: 'No such profile' });  
     }
 
-    const info = await Info.findById(id);
+    const info = await User.findById(id);
     if (!info) {
         return res.status(404).json({ error: 'No such profile' });
     }
@@ -26,9 +26,9 @@ const getProfile = async (req, res) => {
 
 // Create a new profile info
 const createProfile =  async (req, res) => {
-    const { username, password, firstName, lastName, email, phone, address, about } = req.body;
+    const { username, password, firstName, lastName, email, phone, address, about, role } = req.body;
     try {
-        const info = await Info.create({ username, password, firstName, lastName, email, phone, address, about });
+        const info = await User.create({ username, password, firstName, lastName, email, phone, address, about, role });
         res.status(200).json(info);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -43,7 +43,7 @@ const deleteProfile = async (req, res) => {
         return res.status(404).json({ error: 'No such profile' });  
     }
 
-    const info = await Info.findByIdAndDelete({_id: id});
+    const info = await User.findByIdAndDelete({_id: id});
 
     if (!info) {
         return res.status(404).json({ error: 'No such profile' });
@@ -69,7 +69,7 @@ const updateProfile = async (req, res) => {
         updateData.profileImage = profileImage; // Add profileImage if provided
     }
 
-    const info = await Info.findOneAndUpdate({ _id: id }, updateData, { new: true });
+    const info = await User.findOneAndUpdate({ _id: id }, updateData, { new: true });
 
     if (!info) {
         return res.status(404).json({ error: 'No such profile' });

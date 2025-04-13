@@ -12,10 +12,12 @@ const profileRoutes = require("./routes/profile");
 const app = express();
 
 // Allow requests from your frontend and include cookies
-app.use(cors({
-  origin: "http://localhost:3000", 
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // middleware
 app.use(express.json()); // to parse JSON data
@@ -25,26 +27,32 @@ app.use((req, res, next) => {
 });
 
 // Session middleware (required for session-based auth)
-app.use(session({
-  secret: "your-secret-key",  // Change this to a strong secret in production!
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: false,     // set to true if using HTTPS in production
-    httpOnly: true,
-    maxAge: 86400000,  // 1 day in milliseconds
-  },
-}));
+app.use(
+  session({
+    secret: "your-secret-key", // Change this to a strong secret in production!
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // set to true if using HTTPS in production
+      httpOnly: true,
+      maxAge: 86400000, // 1 day in milliseconds
+    },
+  })
+);
 
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 
 // Connect to MongoDB and start the server
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(process.env.PORT || 5000, () => {
-      console.log("Connected to db & Server is running on port", process.env.PORT || 5000);
+    app.listen(process.env.PORT || 4000, () => {
+      console.log(
+        "Connected to db & Server is running on port",
+        process.env.PORT || 4000
+      );
     });
   })
   .catch((error) => {

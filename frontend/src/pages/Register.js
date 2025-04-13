@@ -7,10 +7,10 @@ axios.defaults.withCredentials = true;
 
 export default function Register() {
   const [form, setForm] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
-    role: "tenant", // default role
+    role: "Tenant", // default role
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -32,7 +32,7 @@ export default function Register() {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      await axios.post("http://localhost:4000/api/auth/register", form);
       setSuccess("Registered successfully! Now, login.");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
@@ -124,7 +124,7 @@ export default function Register() {
 
             <div style={{ marginBottom: "16px" }}>
               <input
-                name="name"
+                name="username"
                 onChange={handleChange}
                 placeholder="Username"
                 style={{
@@ -192,8 +192,8 @@ export default function Register() {
                   color: "#000",
                 }}
               >
-                <option value="tenant">Tenant</option>
-                <option value="owner">Owner</option>
+                <option value="Tenant">Tenant</option>
+                <option value="Owner">Owner</option>
               </select>
             </div>
 

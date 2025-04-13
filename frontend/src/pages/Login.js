@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 // Ensure cookies are sent with requests
 axios.defaults.withCredentials = true;
 
-export default function Login() {
+export default function Login({ setUser }) {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState(""); // For error messages
   const [welcome, setWelcome] = useState(""); // For welcome message
@@ -38,16 +38,21 @@ export default function Login() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
+      const res = await axios.post(
+        "http://localhost:4000/api/auth/login",
+        form
+      );
       console.log("Login response:", res.data);
-      setWelcome(`Welcome, ${res.data.user.name}`);
+      setWelcome(`Welcome, ${res.data.user.username}`);
+      // localStorage.setItem("myKey", res.data.user.id);
+      setUser(res.data.user);
       setTimeout(() => {
         setWelcome("");
         // Check role and redirect accordingly
-        if (res.data.user.role === "owner") {
-          navigate("/owner-dashboard");
-        } else if (res.data.user.role === "tenant") {
-          navigate("/tenant-dashboard");
+        if (res.data.user.role === "Owner") {
+          navigate("/profile");
+        } else if (res.data.user.role === "Tenant") {
+          navigate("/profile");
         } else {
           navigate("/dashboard");
         }
@@ -59,7 +64,10 @@ export default function Login() {
           : "";
       if (errMsg.includes("password")) {
         setError("Give the correct password");
-      } else if (errMsg.includes("not registered") || errMsg.includes("no user")) {
+      } else if (
+        errMsg.includes("not registered") ||
+        errMsg.includes("no user")
+      ) {
         setError("This email is not registered");
       } else {
         setError("Invalid credentials. Please try again.");
@@ -122,7 +130,13 @@ export default function Login() {
         </div>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         {/* Login Form */}
         <form
           onSubmit={handleSubmit}

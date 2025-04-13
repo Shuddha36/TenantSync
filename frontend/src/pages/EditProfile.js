@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const EditProfile = () => {
+const EditProfile = ({ user }) => {
   const [profileData, setProfileData] = useState({
     username: "",
     email: "",
@@ -16,11 +16,12 @@ const EditProfile = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  // const userId = localStorage.getItem("myKey");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/api/profile/67eebe241060eb6eb796af58");
+        const response = await fetch("/api/profile/" + user.id);
         if (!response.ok) {
           throw new Error("Failed to fetch profile data");
         }
@@ -58,7 +59,7 @@ const EditProfile = () => {
     setError(null);
 
     try {
-      const response = await fetch("/api/profile/67eebe241060eb6eb796af58", {
+      const response = await fetch("/api/profile/" + user.id, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -72,6 +73,7 @@ const EditProfile = () => {
 
       const updatedProfile = await response.json();
       setSuccess("Profile updated successfully!");
+      navigate("/profile");
       setProfileData(updatedProfile);
     } catch (err) {
       setError(err.message);
@@ -85,7 +87,7 @@ const EditProfile = () => {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch("/api/profile/67eebe241060eb6eb796af58", {
+      const response = await fetch("/api/profile/" + user.id, {
         method: "DELETE",
       });
 
@@ -94,7 +96,7 @@ const EditProfile = () => {
       }
 
       alert("Profile deleted successfully!");
-      navigate("/"); // Redirect to the home page or another page after deletion
+      navigate("/register"); // Redirect to the home page or another page after deletion
     } catch (err) {
       setError(err.message);
     }
@@ -202,7 +204,7 @@ const EditProfile = () => {
         <div className="flex justify-between mt-6">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-600"
           >
             Save Changes
           </button>
