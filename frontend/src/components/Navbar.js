@@ -1,15 +1,34 @@
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
+  const location = useLocation();
+
+  const hideNavbarRoutes = ["/login", "/register"];
+  if (hideNavbarRoutes.includes(location.pathname)) {
+    return null;
+  }
+
   return (
-    <nav className="flex flex-row justify-between items-center bg-gray-800 p-4 text-white">
-      <div>
-        <Link to="/">
-          <h1>My Website</h1>
+    <nav className="flex flex-row justify-between items-center bg-black p-4 text-white shadow-md">
+      <div className="text-xl font-bold">
+        <Link to="/" className="hover:text-gray-300">
+          TenantSync
         </Link>
       </div>
-      <div>
-        <h1> This is a Navbar</h1>
+      <div className="flex space-x-4">
+        {user ? (
+          <>
+            <span>Welcome, {user.username}</span>
+            <Link to="/profile" className="hover:text-gray-300">
+              Profile
+            </Link>
+          </>
+        ) : (
+          <Link to="/login" className="hover:text-gray-300">
+            Login
+          </Link>
+        )}
       </div>
     </nav>
   );

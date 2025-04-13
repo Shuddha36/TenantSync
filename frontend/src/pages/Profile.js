@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  // const userId = localStorage.getItem("myKey");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/api/profile/67f660f67cbba7f9581434f7");
+        const response = await fetch("/api/profile/" + user.id);
         if (!response.ok) {
           throw new Error("Failed to fetch profile data");
         }
@@ -26,6 +27,21 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (!confirmLogout) return;
+
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      navigate("/login");
+    } catch (err) {
+      console.error("Failed to log out:", err);
+    }
+  };
+
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
@@ -36,7 +52,7 @@ const Profile = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Profile</h1>
+      <h1 className="text-2xl font-bold mb-4">{profileData.role} Profile </h1>
       {profileData ? (
         <div>
           {profileData.profileImage && (
@@ -48,33 +64,44 @@ const Profile = () => {
               />
             </div>
           )}
+
           <p className="text-lg">
-            <span className="font-semibold">Name:</span> {profileData.username}
+            <span className="font-semibold">Username:</span>{" "}
+            {profileData.username}
           </p>
           <p className="text-lg">
             <span className="font-semibold">Email:</span> {profileData.email}
           </p>
           <p className="text-lg">
-            <span className="font-semibold">First Name:</span> {profileData.firstName}
+            <span className="font-semibold">First Name:</span>{" "}
+            {profileData.firstName}
           </p>
           <p className="text-lg">
-            <span className="font-semibold">Last Name:</span> {profileData.lastName}
+            <span className="font-semibold">Last Name:</span>{" "}
+            {profileData.lastName}
           </p>
           <p className="text-lg">
             <span className="font-semibold">Phone:</span> {profileData.phone}
           </p>
           <p className="text-lg">
-            <span className="font-semibold">Address:</span> {profileData.address}
+            <span className="font-semibold">Address:</span>{" "}
+            {profileData.address}
           </p>
           <p className="text-lg">
             <span className="font-semibold">About:</span> {profileData.about}
           </p>
-          <div className="flex justify-end mt-6">
+          <div className="flex justify-between mt-6">
             <button
               onClick={() => navigate("/editprofile")}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-600"
             >
               Edit Profile
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4"
+            >
+              Log Out
             </button>
           </div>
         </div>
