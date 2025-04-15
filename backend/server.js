@@ -7,6 +7,9 @@ const session = require("express-session");
 
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profile");
+const propertyRoutes = require("./routes/propertyRoutes");
+const fs = require("fs");
+const path = require("path");
 
 // express app
 const app = express();
@@ -40,9 +43,19 @@ app.use(
   })
 );
 
+// Ensure 'uploads' directory exists
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Serve uploaded images statically
+app.use("/uploads", express.static("uploads"));
+
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/properties", propertyRoutes);
 
 // Connect to MongoDB and start the server
 mongoose
