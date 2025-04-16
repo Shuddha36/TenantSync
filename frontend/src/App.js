@@ -5,8 +5,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import Navbar from "./components/Navbar";
 import EditProfile from "./pages/EditProfile";
+import Home from "./pages/home";
+import OwnerDashboard from "./pages/OwnerDashboard";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/SideBar";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -25,15 +28,19 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App flex">
       <BrowserRouter>
-        <Navbar user={user} />
-        <div>
+        <Sidebar /> {/* Sidebar on the left */}
+        <div className="flex-1">
+          <Navbar user={user} />
           <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/editprofile" element={<EditProfile user={user} />} />
+            <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+            {/* Add more routes as needed */}
           </Routes>
         </div>
       </BrowserRouter>
