@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import EditProfile from "./pages/EditProfile";
+import TenantDashboard from "./pages/TenantDashboard";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/editprofile" element={<EditProfile user={user} />} />
+            <Route path="/tenant" element={<TenantDashboard />} />
           </Routes>
         </div>
       </BrowserRouter>

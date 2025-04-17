@@ -27,21 +27,6 @@ const Profile = ({ user }) => {
     fetchProfile();
   }, []);
 
-  const handleLogout = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
-    if (!confirmLogout) return;
-
-    try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-      navigate("/login");
-    } catch (err) {
-      console.error("Failed to log out:", err);
-    }
-  };
-
   if (loading) {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
@@ -96,12 +81,6 @@ const Profile = ({ user }) => {
               className="bg-black text-white px-4 py-2 rounded hover:bg-gray-600"
             >
               Edit Profile
-            </button>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4"
-            >
-              Log Out
             </button>
           </div>
         </div>
