@@ -8,8 +8,9 @@ import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import EditProfile from "./pages/EditProfile";
 import TenantDashboard from "./pages/TenantDashboard";
-
 import OwnerDashboard from "./pages/OwnerDashboard";
+import Home from "./pages/home";
+import Sidebar from "./components/SideBar";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,9 +31,11 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+      <Sidebar /> {/* Sidebar on the left */}
+      <div className="flex-1">        
         <Navbar user={user} />
-        <div>
           <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile user={user} />} />
