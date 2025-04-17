@@ -9,6 +9,8 @@ import Navbar from "./components/Navbar";
 import EditProfile from "./pages/EditProfile";
 import TenantDashboard from "./pages/TenantDashboard";
 
+import OwnerDashboard from "./pages/OwnerDashboard";
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -36,6 +38,7 @@ function App() {
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/editprofile" element={<EditProfile user={user} />} />
             <Route path="/tenant" element={<TenantDashboard />} />
+            <Route path="/owner-dashboard" element={<OwnerDashboard />} />
           </Routes>
         </div>
       </BrowserRouter>
