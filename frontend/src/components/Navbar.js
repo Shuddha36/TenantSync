@@ -9,6 +9,15 @@ const Navbar = ({ user }) => {
     return null;
   }
 
+  const getProfileLink = () => {
+    if (user.role === "Tenant") {
+      return "/tenant-dashboard";
+    } else if (user.role === "Owner") {
+      return "/owner-dashboard";
+    }
+    return "/"; // Default fallback
+  };
+
   return (
     <nav className="flex flex-row justify-between items-center bg-black p-4 text-white shadow-md">
       <div className="text-xl font-bold">
@@ -20,7 +29,7 @@ const Navbar = ({ user }) => {
         {user ? (
           <>
             <span>Welcome, {user.username}</span>
-            <Link to="/tenant-dashboard" className="hover:text-gray-300">
+            <Link to={getProfileLink()} className="hover:text-gray-300">
               Profile
             </Link>
           </>

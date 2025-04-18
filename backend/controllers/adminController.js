@@ -5,7 +5,7 @@ const Report = require("../models/Report");
 // Get all users (tenants and owners)
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "name email role");
+    const users = await User.find({}, "username email role");
     res.json({ users });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch users" });

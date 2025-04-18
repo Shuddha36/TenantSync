@@ -43,7 +43,7 @@ const AdminDashboard = () => {
         <tbody>
           {users.map((u) => (
             <tr key={u._id} className="text-center border-t">
-              <td className="p-2">{u.name}</td>
+              <td className="p-2">{u.username}</td>
               <td>{u.email}</td>
               <td>{u.role}</td>
               <td>
