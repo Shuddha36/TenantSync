@@ -20,7 +20,7 @@ const Navbar = ({ user }) => {
         {user ? (
           <>
             <span>Welcome, {user.username}</span>
-            <Link to="/profile" className="hover:text-gray-300">
+            <Link to="/tenant-dashboard" className="hover:text-gray-300">
               Profile
             </Link>
           </>

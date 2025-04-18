@@ -1,9 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const TenantDashboard = () => {
+const TenantDashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("currentBookings");
+  const [wishlist, setWishlist] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (activeTab === "wishlist") {
+      const fetchWishlist = async () => {
+        try {
+          const response = await fetch("/api/wishlist/" + user.id);
+          const data = await response.json();
+          setWishlist(data);
+        } catch (err) {
+          console.error("Failed to fetch wishlist:", err);
+        }
+      };
+
+      fetchWishlist();
+    }
+  }, [activeTab]);
 
   const handleLogout = async () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
@@ -27,7 +44,49 @@ const TenantDashboard = () => {
       case "pastBookings":
         return <div>Past Bookings Content</div>;
       case "wishlist":
-        return <div>Wishlist Content</div>;
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {wishlist.map((item) => (
+              <div
+                key={item._id}
+                className="border p-4 rounded shadow relative"
+              >
+                <button
+                  className="absolute top-2 right-2 text-white p-1 rounded-full"
+                  onClick={async () => {
+                    try {
+                      await fetch("/api/wishlist/" + item._id, {
+                        method: "DELETE",
+                      });
+                      setWishlist((prev) =>
+                        prev.filter((wish) => wish._id !== item._id)
+                      );
+                    } catch (err) {
+                      console.error("Failed to delete wishlist item:", err);
+                    }
+                  }}
+                >
+                  <img src="/trash-can.png" alt="Delete" className="w-6 h-6" />
+                </button>
+                <img
+                  src={item.property.image}
+                  alt={item.property.houseName}
+                  className="w-full h-48 object-cover rounded mb-4"
+                />
+                <h3 className="text-lg font-bold">{item.property.houseName}</h3>
+                <p>{item.property.address}</p>
+                <p className="text-sm text-gray-500">
+                  Rooms: {item.property.rooms}
+                </p>
+                {item.property.price && (
+                  <p className="font-semibold text-green-600">
+                    Price: {item.property.price}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        );
       default:
         return null;
     }

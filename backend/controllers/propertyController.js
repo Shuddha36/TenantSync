@@ -5,10 +5,6 @@ const Notification = require("../models/Notification");
 const multer = require("multer");
 const path = require("path");
 
-// Set up multer storage for image uploads
-const multer = require("multer");
-const path = require("path");
-
 // Image upload setup (optional, for testing only)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

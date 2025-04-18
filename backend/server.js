@@ -8,6 +8,8 @@ const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profile");
 const propertyRoutes = require("./routes/propertyRoutes");
+const wishlistRoutes = require("./routes/wishlistRoutes");
+
 const fs = require("fs");
 const path = require("path");
 
@@ -56,6 +58,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/properties", propertyRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 
 // Connect to MongoDB and start the server
 mongoose

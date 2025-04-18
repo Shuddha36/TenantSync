@@ -30,17 +30,16 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
-      <Sidebar /> {/* Sidebar on the left */}
-      <div className="flex-1">        
+      <BrowserRouter>     
         <Navbar user={user} />
+        <div>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/editprofile" element={<EditProfile user={user} />} />
-            <Route path="/tenant" element={<TenantDashboard />} />
+            <Route path="/tenant-dashboard" element={<TenantDashboard user={user} />} />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
           </Routes>
         </div>

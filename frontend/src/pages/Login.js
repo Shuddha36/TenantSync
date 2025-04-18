@@ -50,11 +50,11 @@ export default function Login({ setUser }) {
         setWelcome("");
         // Check role and redirect accordingly
         if (res.data.user.role === "Owner") {
-          navigate("/profile");
+          navigate("/owner-dashboard");
         } else if (res.data.user.role === "Tenant") {
-          navigate("/profile");
+          navigate("/");
         } else {
-          navigate("/dashboard");
+          navigate("/admin");
         }
       }, 1000);
     } catch (err) {
