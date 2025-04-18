@@ -1,4 +1,3 @@
-// backend/routes/propertyRoutes.js
 const express = require("express");
 const router = express.Router();
 const propertyController = require("../controllers/propertyController");
@@ -14,10 +13,14 @@ router.get("/flat-requests", propertyController.getRentalRequests);
 
 // POST endpoint to update (approve/reject) a rental request
 router.post("/flat-requests/:id", propertyController.updateRentalRequest);
+
 // GET all properties for tenant homepage
 router.get("/all", propertyController.getAllProperties);
 
 // Search & filter endpoint for tenants (public)
 router.get("/search", propertyController.searchProperties);
+
+// **New**: GET endpoint to fetch a single property by ID
+router.get("/:id", propertyController.getPropertyById);
 
 module.exports = router;

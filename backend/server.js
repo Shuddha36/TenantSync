@@ -9,7 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profile");
 const propertyRoutes = require("./routes/propertyRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
-
+const adminRoutes = require("./routes/adminRoutes");
 const fs = require("fs");
 const path = require("path");
 
@@ -59,6 +59,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Connect to MongoDB and start the server
 mongoose

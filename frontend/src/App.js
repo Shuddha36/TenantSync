@@ -11,7 +11,8 @@ import TenantDashboard from "./pages/TenantDashboard";
 import OwnerDashboard from "./pages/OwnerDashboard";
 import Home from "./pages/home";
 import Sidebar from "./components/SideBar";
-
+import PropertyDetails from "./pages/PropertyDetails";
+import AdminDashboard from "./components/AdminDashboard";
 function App() {
   const [user, setUser] = useState(null);
 
@@ -41,6 +42,8 @@ function App() {
             <Route path="/editprofile" element={<EditProfile user={user} />} />
             <Route path="/tenant-dashboard" element={<TenantDashboard user={user} />} />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+            <Route path="/property/:id" element={<PropertyDetails />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
         </div>
       </BrowserRouter>

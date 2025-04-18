@@ -1,6 +1,7 @@
 // src/components/PropertyCard.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PropertyCard = ({ property }) => {
   const [userId, setUserId] = useState(null);
@@ -8,12 +9,9 @@ const PropertyCard = ({ property }) => {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/auth/session",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get("http://localhost:4000/api/auth/session", {
+          withCredentials: true,
+        });
         if (response.data.loggedIn) {
           setUserId(response.data.user.id);
         }
@@ -44,16 +42,25 @@ const PropertyCard = ({ property }) => {
   };
 
   return (
-    <div className="border rounded-xl p-4 shadow-md max-w-md mx-auto relative">
-      <img
-        src={`http://localhost:4000${property.image}`}
-        alt="Flat"
-        className="w-full h-48 object-cover rounded"
-      />
-      <h2 className="text-xl font-bold mt-2">{property.houseName}</h2>
-      <p className="text-gray-600">{property.address}</p>
-      <p>Rooms: {property.rooms}</p>
-      <p className="font-semibold text-green-600">Price: ${property.price}</p>
+    <div className="border rounded-xl p-4 shadow-md max-w-md mx-auto relative bg-white">
+      {/* Property Image and Link to Details */}
+      <Link to={`/property/${property._id}`}>
+        <img
+          src={`http://localhost:4000${property.image}`}
+          alt="Flat"
+          className="w-full h-48 object-cover rounded-lg mb-4"
+        />
+        <h2 className="text-xl font-bold text-gray-800">{property.houseName}</h2>
+        <p className="text-gray-600">{property.address}</p>
+
+        {/* Room and Rent Information */}
+        <div className="flex justify-between items-center mt-2">
+          <p className="text-sm text-gray-700">Rooms: {property.rooms}</p>
+          <p className="text-sm font-semibold text-green-600">Price: ${property.price}</p>
+        </div>
+      </Link>
+
+      {/* Add to Wishlist Button */}
       <button
         onClick={handleAddToWishlist}
         className="absolute top-2 right-2 bg-transparent border-none cursor-pointer"

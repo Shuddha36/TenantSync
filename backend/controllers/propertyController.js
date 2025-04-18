@@ -173,5 +173,20 @@ exports.searchProperties = async (req, res) => {
   }
 };
 
+// backend/controllers/propertyController.js
+// Add this function to handle fetching a property by ID
+exports.getPropertyById = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+    res.json({ property });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch property" });
+  }
+};
+
+
 // Optional image upload export
 exports.uploadPropertyImage = upload.single("image");

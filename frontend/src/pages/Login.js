@@ -24,7 +24,7 @@ export default function Login({ setUser }) {
       setWelcome("Welcome, Admin");
       setTimeout(() => {
         setWelcome("");
-        navigate("/admin");
+        navigate("/admin/dashboard");
       }, 1000);
       return;
     }
