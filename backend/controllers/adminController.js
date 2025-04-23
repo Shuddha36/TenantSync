@@ -15,8 +15,17 @@ exports.getAllUsers = async (req, res) => {
 // Get all reports
 exports.getAllReports = async (req, res) => {
   try {
-    const reports = await Report.find().populate("user", "name role");
-    res.json({ reports });
+    const reports = await Report.find()
+      .populate("reportedBy", "username role")  // Ensure the correct field is populated
+      .populate("propertyId", "houseName"); // Add this if you want to populate the property name
+
+    // Log the reports to verify
+    console.log("Reports:", reports);
+
+    // Filter out reports that don't have a valid reportedBy field
+    const filteredReports = reports.filter(report => report.reportedBy);
+
+    res.json({ reports: filteredReports });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch reports" });
   }

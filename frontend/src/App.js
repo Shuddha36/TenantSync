@@ -13,6 +13,7 @@ import Home from "./pages/home";
 import Sidebar from "./components/SideBar";
 import PropertyDetails from "./pages/PropertyDetails";
 import AdminDashboard from "./components/AdminDashboard";
+import ReportForm from "./pages/ReportForm";
 function App() {
   const [user, setUser] = useState(null);
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
             <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/report/:id" element={<ReportForm />} />;
           </Routes>
         </div>
       </BrowserRouter>

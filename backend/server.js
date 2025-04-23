@@ -12,6 +12,10 @@ const wishlistRoutes = require("./routes/wishlistRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const fs = require("fs");
 const path = require("path");
+const commentRoutes = require("./routes/commentRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+
+
 
 // express app
 const app = express();
@@ -60,6 +64,9 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/reports", reportRoutes);
+
 
 // Connect to MongoDB and start the server
 mongoose

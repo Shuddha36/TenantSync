@@ -59,21 +59,31 @@ const AdminDashboard = () => {
         </tbody>
       </table>
 
+  
+
       <h2 className="text-2xl font-bold mb-4">📩 User Reports</h2>
       {reports.map((r) => (
         <div
           key={r._id}
-          className="border rounded-md p-3 mb-4 shadow-sm bg-white"
-        >
-          <p>
-            <strong>{r.user.name}</strong> ({r.user.role})
+          className="border rounded-md p-4 mb-4 shadow bg-white"
+      >
+        <p className="font-semibold">
+          {r.reportedBy?.username || "Unknown User"} ({r.reportedBy?.role || "Unknown Role"})
+        </p>
+        <p className="text-gray-800 my-2">"{r.description}"</p>
+    
+        {r.propertyId && (
+          <p className="text-gray-700 mt-1">
+            🏠 <strong>Reported Property:</strong> {r.propertyId.houseName}
           </p>
-          <p className="text-gray-700 italic mt-1">"{r.message}"</p>
-          <p className="text-xs text-gray-500 mt-1">
-            Reported on {new Date(r.createdAt).toLocaleString()}
-          </p>
-        </div>
+        )}
+     
+        <p className="text-xs text-gray-500 mt-1">
+          Reported on {new Date(r.createdAt).toLocaleString()}
+        </p>
+      </div>
       ))}
+
     </div>
   );
 };
