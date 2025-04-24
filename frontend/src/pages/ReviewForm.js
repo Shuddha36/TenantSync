@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+//import RatingStars from "../components/RatingStars";
 import axios from "axios";
 
 export default function ReviewForm({ propertyId }) {
