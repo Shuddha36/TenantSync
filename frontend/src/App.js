@@ -43,7 +43,7 @@ function App() {
             <Route path="/editprofile" element={<EditProfile user={user} />} />
             <Route path="/tenant-dashboard" element={<TenantDashboard user={user} />} />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-            <Route path="/property/:id" element={<PropertyDetails />} />
+            <Route path="/property/:id" element={<PropertyDetails user={user} />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/report/:id" element={<ReportForm />} />;
             <Route path="/properties/:id" element={<PropertyDetails />} />
