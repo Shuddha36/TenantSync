@@ -11,7 +11,7 @@ const propertyRoutes = require("./routes/propertyRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");  // review 
-const forgotPasswordRoute = require("./routes/forgotPasswordRoute");  // forgot password 
+// const forgotPasswordRoute = require("./routes/forgotPasswordRoute");  // forgot password 
 const fs = require("fs");
 const path = require("path");
 
@@ -63,7 +63,7 @@ app.use("/api/properties", propertyRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/reviews", reviewRoutes); // review 
-app.use("/api", forgotPasswordRoute);  // forgot password 
+// app.use("/api", forgotPasswordRoute);  // forgot password 
 
 // Connect to MongoDB and start the server
 mongoose

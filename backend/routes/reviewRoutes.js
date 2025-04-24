@@ -1,3 +1,4 @@
+// backend/routes/reviewRoutes.js
 const express = require("express");
 const { addReview, getReviewsForProperty } = require("../controllers/reviewController");
 
