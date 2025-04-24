@@ -18,5 +18,7 @@ export default function OwnerDashboard() {
         <PropertyManagement />
       </main>
     </div>
+
+    
   );
 }
