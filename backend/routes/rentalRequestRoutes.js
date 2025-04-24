@@ -3,6 +3,7 @@ const {
   createRentalRequest,
   updateRentalRequest,
   deleteRentalRequest,
+  getAllRentalRequests
 } = require("../controllers/rentalRequestController");
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.post("/", createRentalRequest);
 router.patch("/:id", updateRentalRequest);
 router.delete("/:id", deleteRentalRequest);
+router.get("/", getAllRentalRequests);
 
 module.exports = router;

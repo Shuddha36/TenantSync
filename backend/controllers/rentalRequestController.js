@@ -45,3 +45,17 @@ exports.deleteRentalRequest = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+// Get all rental requests
+exports.getAllRentalRequests = async (req, res) => {
+  try {
+    const requests = await RentalRequest
+      .find()
+      .populate('property')
+      .populate('tenant');
+    res.status(200).json(requests);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
