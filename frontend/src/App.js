@@ -46,6 +46,7 @@ function App() {
             <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/report/:id" element={<ReportForm />} />;
+            <Route path="/properties/:id" element={<PropertyDetails />} />
           </Routes>
         </div>
       </BrowserRouter>

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const propertyController = require("../controllers/propertyController");
 
+router.get("/owner", propertyController.getProperties);
+
 // POST endpoint to create a property advertisement with an image upload
 router.post("/create", propertyController.uploadPropertyImage, propertyController.createAdvertisement);
 
