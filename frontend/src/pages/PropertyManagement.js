@@ -1,6 +1,8 @@
 // src/pages/PropertyManagement.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 import CreateAdvertisement from "../components/CreateAdvertisement";
 import FlatApproval from "../components/FlatApproval";
 // NEW: import your MyAdvertisement view
@@ -10,24 +12,7 @@ export default function PropertyManagement() {
   const [activeTab, setActiveTab] = useState("create");
   const navigate = useNavigate();
   const { propertyId } = useParams(); // Property ID from the URL
-  const [reviews, setReviews] = useState([]);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-
-  // Fetch reviews for the property
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const res = await axios.get(`http://localhost:4000/api/reviews/${propertyId}`);
-        setReviews(res.data.reviews);
-      } catch (err) {
-        console.error("Error fetching reviews:", err);
-      }
-    };
-
-    fetchReviews();
-  }, [propertyId]);
-
+  
   const handleLogout = async () => {
     if (!window.confirm("Are you sure you want to log out?")) return;
     try {
@@ -41,27 +26,24 @@ export default function PropertyManagement() {
     }
   };
 
-  // Handle review submission
-  const handleReviewSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post(
-        "http://localhost:4000/api/reviews/add",
-        { propertyId, rating, comment },
-        { withCredentials: true } // Ensure session cookie is sent for authentication
-      );
-      alert("Review submitted!");
-      setRating(0);
-      setComment("");
-    } catch (err) {
-      alert("Error submitting review: " + err.response.data.error);
-    }
-  };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#f0f0f0" }}>
+    <div
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        backgroundColor: "#f0f0f0",
+      }}
+    >
       {/* Sidebar */}
-      <div style={{ width: "200px", backgroundColor: "#333", color: "#fff", padding: "20px" }}>
+      <div
+        style={{
+          width: "200px",
+          backgroundColor: "#333",
+          color: "#fff",
+          padding: "20px",
+        }}
+      >
         <div
           style={{ marginBottom: "20px", cursor: "pointer" }}
           onClick={() => setActiveTab("create")}
@@ -83,7 +65,10 @@ export default function PropertyManagement() {
         >
           Flat Approval
         </div>
-        <div style={{ marginBottom: "20px", cursor: "pointer" }} onClick={() => navigate("/profile")}>
+        <div
+          style={{ marginBottom: "20px", cursor: "pointer" }}
+          onClick={() => navigate("/profile")}
+        >
           Personal Information
         </div>
         <div

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import RatingStars from "./RatingStars"; // For displaying the rating stars
 
 export default function ReviewList({ propertyId }) {
   const [reviews, setReviews] = useState([]);
@@ -25,7 +24,6 @@ export default function ReviewList({ propertyId }) {
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review._id} className="review">
-            <p><strong>Rating:</strong> <RatingStars rating={review.rating} /></p>
             <p>{review.reviewText}</p>
             {/* Optionally, you could add more details like the reviewer name or date */}
           </div>

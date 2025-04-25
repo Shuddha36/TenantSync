@@ -10,12 +10,9 @@ const profileRoutes = require("./routes/profile");
 const propertyRoutes = require("./routes/propertyRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-<<<<<<< HEAD
 const rentalRequestRoutes = require("./routes/rentalRequestRoutes");
-=======
 const reviewRoutes = require("./routes/reviewRoutes");  // review 
 // const forgotPasswordRoute = require("./routes/forgotPasswordRoute");  // forgot password 
->>>>>>> 8e84477c496d4e1d4b2d87239257d3589fa5c6a5
 const fs = require("fs");
 const path = require("path");
 const commentRoutes = require("./routes/commentRoutes");
