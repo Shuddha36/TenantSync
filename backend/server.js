@@ -69,7 +69,6 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/reports", reportRoutes);
-
 app.use("/api/rental-requests", rentalRequestRoutes);
 app.use("/api/reviews", reviewRoutes); // review 
 // app.use("/api", forgotPasswordRoute);  // forgot password 

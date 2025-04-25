@@ -8,13 +8,14 @@ export default function ReviewList({ propertyId }) {
   useEffect(() => {
     async function fetchReviews() {
       try {
-        const response = await axios.get(`http://localhost:4000/api/reviews/${propertyId}`);
-        setReviews(response.data); // Set reviews for the property
+        const response = await axios.get(
+          `http://localhost:4000/api/reviews/${propertyId}`
+        );
+        setReviews(response.data.reviews); // Use the correct response shape
       } catch (err) {
         setError("Error fetching reviews.");
       }
     }
-
     fetchReviews();
   }, [propertyId]);
 
@@ -24,8 +25,14 @@ export default function ReviewList({ propertyId }) {
       {reviews.length > 0 ? (
         reviews.map((review) => (
           <div key={review._id} className="review">
-            <p>{review.reviewText}</p>
-            {/* Optionally, you could add more details like the reviewer name or date */}
+            <p>
+              <strong>{review.userId?.username || "User"}</strong> (
+              {review.rating} Stars)
+            </p>
+            <p>{review.comment}</p>
+            <p className="text-sm text-gray-500">
+              {new Date(review.createdAt).toLocaleString()}
+            </p>
           </div>
         ))
       ) : (

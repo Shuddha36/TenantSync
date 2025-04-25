@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
+import ReviewForm from "./ReviewForm";
+import ReviewList from "./ReviewList";
 
 const PropertyDetails = ({ user }) => {
   const { id } = useParams();
@@ -12,9 +14,17 @@ const PropertyDetails = ({ user }) => {
   const [replyingTo, setReplyingTo] = useState(null);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedContent, setEditedContent] = useState("");
-  const [reviews, setReviews] = useState([]);
-  const [newReview, setNewReview] = useState({ rating: 0, comment: "" });
   const [userId, setUserId] = useState(null);
+  const [reviewsRefresh, setReviewsRefresh] = useState(0);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await axios.get(`http://localhost:4000/api/reviews/${id}`);
+      // No need to set reviews here, ReviewList handles it
+    } catch (err) {
+      // No-op
+    }
+  };
 
   const fetchProperty = async () => {
     try {
@@ -31,15 +41,6 @@ const PropertyDetails = ({ user }) => {
     });
     const data = await res.json();
     setComments(data);
-  };
-
-  const fetchReviews = async () => {
-    try {
-      const res = await axios.get(`http://localhost:4000/api/reviews/${id}`);
-      setReviews(res.data.reviews);
-    } catch (err) {
-      console.error("Error fetching reviews:", err);
-    }
   };
 
   const fetchUserId = async () => {
@@ -91,7 +92,7 @@ const PropertyDetails = ({ user }) => {
   };
 
   const handleLikeDislike = async (commentId, type) => {
-    await fetch(`http://localhost:4000/api/comments/${commentId}/${type}`, {
+    await fetch(`http://localhost:4000/api/comments/${type}/${commentId}`, {
       method: "POST",
       credentials: "include",
     });
@@ -116,28 +117,6 @@ const PropertyDetails = ({ user }) => {
       credentials: "include",
     });
     fetchComments();
-  };
-
-  const handleAddReview = async () => {
-    if (!userId) {
-      alert("You must be logged in to add a review.");
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:4000/api/reviews", {
-        propertyId: id,
-        userId,
-        rating: newReview.rating,
-        comment: newReview.comment,
-      });
-      alert(response.data.message);
-      setNewReview({ rating: 0, comment: "" });
-      fetchReviews();
-    } catch (error) {
-      console.error("Failed to add review:", error);
-      alert("Failed to add review. Please try again.");
-    }
   };
 
   const handleRentNow = async () => {
@@ -168,8 +147,8 @@ const PropertyDetails = ({ user }) => {
   useEffect(() => {
     fetchProperty();
     fetchComments();
-    fetchReviews();
     fetchUserId();
+    // fetchReviews is not needed here, ReviewList fetches reviews
   }, [id]);
 
   if (!property) return <div className="text-center mt-10">Loading...</div>;
@@ -192,11 +171,17 @@ const PropertyDetails = ({ user }) => {
         <strong>Description:</strong> {property.description}
       </p>
 
+      <button
+        onClick={handleRentNow}
+        className="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-6 mr-4"
+      >
+        Rent Now
+      </button>
       <Link
         to={`/report/${property._id}`}
         className="inline-block bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-6"
       >
-        Submit Report
+        Report
       </Link>
 
       <hr className="my-6" />
@@ -319,67 +304,17 @@ const PropertyDetails = ({ user }) => {
       {/* Review Section */}
       {userId && (
         <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-2">Add Review</h3>
-          <div>
-            <label>Rating: </label>
-            <select
-              value={newReview.rating}
-              onChange={(e) =>
-                setNewReview({ ...newReview, rating: e.target.value })
-              }
-              className="p-2 border rounded"
-            >
-              <option value="0">Select rating</option>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <option key={star} value={star}>
-                  {star} Star{star > 1 ? "s" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label>Comment: </label>
-            <textarea
-              value={newReview.comment}
-              onChange={(e) =>
-                setNewReview({ ...newReview, comment: e.target.value })
-              }
-              className="p-2 border rounded w-full mt-2"
-            ></textarea>
-          </div>
-          <button
-            onClick={handleAddReview}
-            className="mt-4 p-2 bg-blue-500 text-white rounded"
-          >
-            Submit Review
-          </button>
+          <ReviewForm
+            propertyId={id}
+            userId={userId}
+            onReviewAdded={fetchReviews}
+          />
         </div>
       )}
       <div className="mt-6">
         <h3 className="text-xl font-semibold mb-2">Reviews</h3>
-        {reviews.length === 0 ? (
-          <p>No reviews yet.</p>
-        ) : (
-          reviews.map((review) => (
-            <div key={review._id} className="border p-4 mb-4 rounded-lg">
-              <p>
-                <strong>{review.userId.name}</strong> ({review.rating} Stars)
-              </p>
-              <p>{review.comment}</p>
-              <p className="text-sm text-gray-500">
-                {new Date(review.createdAt).toLocaleString()}
-              </p>
-            </div>
-          ))
-        )}
+        <ReviewList propertyId={id} />
       </div>
-
-      <button
-        onClick={handleRentNow}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Rent Now
-      </button>
     </div>
   );
 };

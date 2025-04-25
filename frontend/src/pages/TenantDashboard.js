@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import MyRentalHistory from "../components/MyRentalHistory";
 
 const TenantDashboard = ({ user }) => {
-  const [activeTab, setActiveTab] = useState("currentBookings");
+  const [activeTab, setActiveTab] = useState("rentalHistory");
   const [wishlist, setWishlist] = useState([]);
   const navigate = useNavigate();
 
@@ -39,52 +40,62 @@ const TenantDashboard = ({ user }) => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "currentBookings":
-        return <div>Current Bookings Content</div>;
-      case "pastBookings":
-        return <div>Past Bookings Content</div>;
+      case "rentalHistory":
+        return <MyRentalHistory />;
       case "wishlist":
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {wishlist.map((item) => (
-              <div
-                key={item._id}
-                className="border p-4 rounded shadow relative"
-              >
-                <button
-                  className="absolute top-2 right-2 text-white p-1 rounded-full"
-                  onClick={async () => {
-                    try {
-                      await fetch("/api/wishlist/" + item._id, {
-                        method: "DELETE",
-                      });
-                      setWishlist((prev) =>
-                        prev.filter((wish) => wish._id !== item._id)
-                      );
-                    } catch (err) {
-                      console.error("Failed to delete wishlist item:", err);
-                    }
-                  }}
+          <div className="p-4">
+            <h2 className="text-2xl font-bold mb-4">My Wishlist</h2>
+            {wishlist.length === 0 && (
+              <p className="text-gray-500">Your wishlist is empty.</p>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {wishlist.map((item) => (
+                <div
+                  key={item._id}
+                  className="border p-4 rounded shadow relative"
                 >
-                  <img src="/trash-can.png" alt="Delete" className="w-6 h-6" />
-                </button>
-                <img
-                  src={item.property.image}
-                  alt={item.property.houseName}
-                  className="w-full h-48 object-cover rounded mb-4"
-                />
-                <h3 className="text-lg font-bold">{item.property.houseName}</h3>
-                <p>{item.property.address}</p>
-                <p className="text-sm text-gray-500">
-                  Rooms: {item.property.rooms}
-                </p>
-                {item.property.price && (
-                  <p className="font-semibold text-green-600">
-                    Price: {item.property.price}
+                  <button
+                    className="absolute top-2 right-2 text-white p-1 rounded-full"
+                    onClick={async () => {
+                      try {
+                        await fetch("/api/wishlist/" + item._id, {
+                          method: "DELETE",
+                        });
+                        setWishlist((prev) =>
+                          prev.filter((wish) => wish._id !== item._id)
+                        );
+                      } catch (err) {
+                        console.error("Failed to delete wishlist item:", err);
+                      }
+                    }}
+                  >
+                    <img
+                      src="/trash-can.png"
+                      alt="Delete"
+                      className="w-6 h-6"
+                    />
+                  </button>
+                  <img
+                    src={item.property.image}
+                    alt={item.property.houseName}
+                    className="w-full h-48 object-cover rounded mb-4"
+                  />
+                  <h3 className="text-lg font-bold">
+                    {item.property.houseName}
+                  </h3>
+                  <p>{item.property.address}</p>
+                  <p className="text-sm text-gray-500">
+                    Rooms: {item.property.rooms}
                   </p>
-                )}
-              </div>
-            ))}
+                  {item.property.price && (
+                    <p className="font-semibold text-green-600">
+                      Price: {item.property.price}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         );
       default:
@@ -101,21 +112,11 @@ const TenantDashboard = ({ user }) => {
           <li>
             <button
               className={`w-full text-left p-2 rounded ${
-                activeTab === "currentBookings" ? "bg-gray-600" : ""
+                activeTab === "rentalHistory" ? "bg-gray-600" : ""
               }`}
-              onClick={() => setActiveTab("currentBookings")}
+              onClick={() => setActiveTab("rentalHistory")}
             >
-              Current Bookings
-            </button>
-          </li>
-          <li>
-            <button
-              className={`w-full text-left p-2 rounded ${
-                activeTab === "pastBookings" ? "bg-gray-600" : ""
-              }`}
-              onClick={() => setActiveTab("pastBookings")}
-            >
-              Past Bookings
+              Rental History
             </button>
           </li>
           <li>
