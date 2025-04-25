@@ -3,60 +3,65 @@ import moment from 'moment';
 
 export default function FlatApproval() {
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Fetch all rental requests and filter for pending status
+  // Fetch only this owner's pending requests
   const fetchRequests = async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/rental-requests', {
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error('Failed to fetch rental requests');
-      const data = await res.json();
-      setRequests(data.filter(req => req.status === 'pending'));
+      const res = await fetch(
+        'http://localhost:4000/api/rental-requests',
+        { credentials: 'include' }
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to fetch rental requests');
+      }
+      const data = await res.json(); // data is an array of requests
+      setRequests(data);
     } catch (err) {
       console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchRequests();
-  }, []);
+  useEffect(() => { fetchRequests(); }, []);
 
-  // Approve a rental request by updating its status
   const handleApprove = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/rental-requests/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ status: 'approved' }),
-      });
-      if (res.ok) {
-        setRequests(prev => prev.filter(r => r._id !== id));
-      } else {
-        console.error('Failed to approve request');
-      }
+      const res = await fetch(
+        `http://localhost:4000/api/rental-requests/${id}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ status: 'approved' }),
+        }
+      );
+      if (res.ok) setRequests(prev => prev.filter(r => r._id !== id));
+      else console.error('Failed to approve request');
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Delete a rental request
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/rental-requests/${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (res.ok) {
-        setRequests(prev => prev.filter(r => r._id !== id));
-      } else {
-        console.error('Failed to delete request');
-      }
+      const res = await fetch(
+        `http://localhost:4000/api/rental-requests/${id}`,
+        { method: 'DELETE', credentials: 'include' }
+      );
+      if (res.ok) setRequests(prev => prev.filter(r => r._id !== id));
+      else console.error('Failed to delete request');
     } catch (err) {
       console.error(err);
     }
   };
+
+  if (loading) return <p className="text-center mt-6">Loading requests...</p>;
+  if (error) return <p className="text-center mt-6 text-red-500">{error}</p>;
 
   return (
     <div className="p-4">
@@ -65,13 +70,25 @@ export default function FlatApproval() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {requests.map(req => (
-            <div key={req._id} className="bg-white shadow rounded p-4 flex flex-col justify-between">
+            <div
+              key={req._id}
+              className="bg-white shadow rounded p-4 flex flex-col justify-between"
+            >
               <div>
-                <h3 className="text-lg font-semibold mb-2">{req.property.houseName}</h3>
-                <p className="text-sm mb-1"><strong>Address:</strong> {req.property.address}</p>
-                <p className="text-sm mb-1"><strong>Tenant:</strong> {req.tenant.username || req.tenant.email}</p>
-                <p className="text-xs text-gray-500">Requested {moment(req.createdAt).fromNow()}</p>
+                <h3 className="text-lg font-semibold mb-2">
+                  {req.property.houseName}
+                </h3>
+                <p className="text-sm mb-1">
+                  <strong>Address:</strong> {req.property.address}
+                </p>
+                <p className="text-sm mb-1">
+                  <strong>Tenant:</strong> {req.tenant.username || req.tenant.email}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Requested {moment(req.createdAt).fromNow()}
+                </p>
               </div>
+
               <div className="mt-4 flex justify-between">
                 <button
                   onClick={() => handleApprove(req._id)}
