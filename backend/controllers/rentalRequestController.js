@@ -1,4 +1,6 @@
 const RentalRequest = require("../models/RentalRequest");
+const Property = require('../models/Property');
+
 
 // Create a new rental request
 exports.createRentalRequest = async (req, res) => {
@@ -47,15 +49,28 @@ exports.deleteRentalRequest = async (req, res) => {
 };
 
 
-// Get all rental requests
+// Get all pending rental requests for properties owned by the current user
 exports.getAllRentalRequests = async (req, res) => {
   try {
-    const requests = await RentalRequest
-      .find()
+    // Read owner ID from session (session.user.id is set on login)
+    const ownerId = req.session.user && req.session.user.id;
+    if (!ownerId) return res.status(401).json({ error: "Unauthorized" });
+
+    // Find property IDs owned by this user
+    const ownedProps = await Property.find({ owner: ownerId }, '_id');
+    const propIds = ownedProps.map(p => p._id);
+
+    // Fetch only pending requests for those properties
+    const requests = await RentalRequest.find({
+      property: { $in: propIds },
+      status: 'pending'
+    })
       .populate('property')
-      .populate('tenant');
+      .populate('tenant', 'username email');
+
     res.status(200).json(requests);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
 };

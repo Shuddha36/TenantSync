@@ -25,4 +25,5 @@ router.get("/search", propertyController.searchProperties);
 // **New**: GET endpoint to fetch a single property by ID
 router.get("/:id", propertyController.getPropertyById);
 
+
 module.exports = router;
