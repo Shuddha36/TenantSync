@@ -10,6 +10,7 @@ const profileRoutes = require("./routes/profile");
 const propertyRoutes = require("./routes/propertyRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const rentalRequestRoutes = require("./routes/rentalRequestRoutes");
 const fs = require("fs");
 const path = require("path");
 const commentRoutes = require("./routes/commentRoutes");
@@ -67,6 +68,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/reports", reportRoutes);
 
+app.use("/api/rental-requests", rentalRequestRoutes);
 
 // Connect to MongoDB and start the server
 mongoose

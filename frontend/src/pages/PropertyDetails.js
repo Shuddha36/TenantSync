@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import moment from "moment";
 
-const PropertyDetails = () => {
+const PropertyDetails = ({ user }) => {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [comments, setComments] = useState([]);
@@ -83,6 +83,31 @@ const PropertyDetails = () => {
       credentials: "include",
     });
     fetchComments();
+  };
+
+  const handleRentNow = async () => {
+    try {
+      const userId = user.id; // Replace with actual user ID from session
+      const res = await fetch("http://localhost:4000/api/rental-requests/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          property: id,
+          tenant: userId,
+        }),
+      });
+
+      if (res.ok) {
+        alert("Rental request submitted successfully!");
+      } else {
+        alert("Failed to submit rental request.");
+      }
+    } catch (err) {
+      console.error("Error submitting rental request:", err);
+      alert("An error occurred while submitting the rental request.");
+    }
   };
 
   useEffect(() => {
@@ -239,6 +264,12 @@ const PropertyDetails = () => {
           </div>
         ))}
       </div>
+     <button
+        onClick={handleRentNow}
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Rent Now
+      </button>
     </div>
   );
 };
