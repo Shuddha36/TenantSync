@@ -1,3 +1,4 @@
+// src/pages/Register.js
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -227,12 +228,30 @@ export default function Register() {
               marginTop: "16px",
             }}
           >
-            If you already register? then{" "}
+            Already registered?{" "}
             <span
               style={{ textDecoration: "underline", cursor: "pointer" }}
               onClick={() => navigate("/login")}
             >
               Login
+            </span>
+          </p>
+
+          {/* Add forgot password link */}
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "14px",
+              color: "#fff",
+              marginTop: "16px",
+            }}
+          >
+            Forgot your password?{" "}
+            <span
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => navigate("/forgot-password")}
+            >
+              Reset here
             </span>
           </p>
         </div>

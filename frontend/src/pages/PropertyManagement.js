@@ -9,6 +9,24 @@ import MyAdvertisement from "../components/MyAdvertisement";
 export default function PropertyManagement() {
   const [activeTab, setActiveTab] = useState("create");
   const navigate = useNavigate();
+  const { propertyId } = useParams(); // Property ID from the URL
+  const [reviews, setReviews] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
+  // Fetch reviews for the property
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await axios.get(`http://localhost:4000/api/reviews/${propertyId}`);
+        setReviews(res.data.reviews);
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
+      }
+    };
+
+    fetchReviews();
+  }, [propertyId]);
 
   const handleLogout = async () => {
     if (!window.confirm("Are you sure you want to log out?")) return;
@@ -20,6 +38,23 @@ export default function PropertyManagement() {
       navigate("/login");
     } catch (err) {
       console.error("Failed to log out:", err);
+    }
+  };
+
+  // Handle review submission
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:4000/api/reviews/add",
+        { propertyId, rating, comment },
+        { withCredentials: true } // Ensure session cookie is sent for authentication
+      );
+      alert("Review submitted!");
+      setRating(0);
+      setComment("");
+    } catch (err) {
+      alert("Error submitting review: " + err.response.data.error);
     }
   };
 
@@ -48,10 +83,7 @@ export default function PropertyManagement() {
         >
           Flat Approval
         </div>
-        <div
-          style={{ marginBottom: "20px", cursor: "pointer" }}
-          onClick={() => navigate("/profile")}
-        >
+        <div style={{ marginBottom: "20px", cursor: "pointer" }} onClick={() => navigate("/profile")}>
           Personal Information
         </div>
         <div

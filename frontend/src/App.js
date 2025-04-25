@@ -9,11 +9,17 @@ import Navbar from "./components/Navbar";
 import EditProfile from "./pages/EditProfile";
 import TenantDashboard from "./pages/TenantDashboard";
 import OwnerDashboard from "./pages/OwnerDashboard";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import Sidebar from "./components/SideBar";
-import PropertyDetails from "./pages/PropertyDetails";
+import PropertyDetails from "./pages/PropertyDetails"; // This will handle reviews and ratings
 import AdminDashboard from "./components/AdminDashboard";
+<<<<<<< HEAD
 import ReportForm from "./pages/ReportForm";
+=======
+import ReviewForm from "./pages/ReviewForm";  // Review form for submitting reviews
+import ReviewList from "./pages/ReviewList";  // List of reviews for a property
+
+>>>>>>> 8e84477c496d4e1d4b2d87239257d3589fa5c6a5
 function App() {
   const [user, setUser] = useState(null);
 
@@ -32,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>     
+      <BrowserRouter>
         <Navbar user={user} />
         <div>
           <Routes>
@@ -47,6 +53,11 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/report/:id" element={<ReportForm />} />;
             <Route path="/properties/:id" element={<PropertyDetails />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/property/:id" element={<PropertyDetails />}>
+              <Route path="reviews" element={<ReviewList />} />  {/* Display reviews */}
+              <Route path="review" element={<ReviewForm user={user} />} />  {/* Submit a review */}
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
