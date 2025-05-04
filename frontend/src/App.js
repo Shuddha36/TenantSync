@@ -13,8 +13,8 @@ import Home from "./pages/home";
 import PropertyDetails from "./pages/PropertyDetails"; // This will handle reviews and ratings
 import AdminDashboard from "./components/AdminDashboard";
 import ReportForm from "./pages/ReportForm";
-import ReviewForm from "./pages/ReviewForm";  // Review form for submitting reviews
-import ReviewList from "./pages/ReviewList";  // List of reviews for a property
+import Footer from "./components/Footer";
+import Payment from "./pages/Payment";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -43,19 +43,22 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile user={user} />} />
             <Route path="/editprofile" element={<EditProfile user={user} />} />
-            <Route path="/tenant-dashboard" element={<TenantDashboard user={user} />} />
+            <Route
+              path="/tenant-dashboard"
+              element={<TenantDashboard user={user} />}
+            />
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-            <Route path="/property/:id" element={<PropertyDetails user={user} />} />
+            <Route
+              path="/property/:id"
+              element={<PropertyDetails user={user} />}
+            />
+            <Route path="/payment" element={<Payment user={user} />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/report/:id" element={<ReportForm />} />;
+            <Route path="/report/:id" element={<ReportForm />} />
             <Route path="/properties/:id" element={<PropertyDetails />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/property/:id" element={<PropertyDetails />}>
-              <Route path="reviews" element={<ReviewList />} />  {/* Display reviews */}
-              <Route path="review" element={<ReviewForm user={user} />} />  {/* Submit a review */}
-            </Route>
           </Routes>
         </div>
+        <Footer />
       </BrowserRouter>
     </div>
   );

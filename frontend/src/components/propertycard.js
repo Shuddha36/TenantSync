@@ -9,9 +9,12 @@ const PropertyCard = ({ property }) => {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/auth/session", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:4000/api/auth/session",
+          {
+            withCredentials: true,
+          }
+        );
         if (response.data.loggedIn) {
           setUserId(response.data.user.id);
         }
@@ -23,50 +26,33 @@ const PropertyCard = ({ property }) => {
     fetchUserId();
   }, []);
 
-  const handleAddToWishlist = async () => {
-    if (!userId) {
-      alert("You must be logged in to add to wishlist.");
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:4000/api/wishlist", {
-        userId,
-        propertyId: property._id,
-      });
-      alert(response.data.message || "Added to wishlist!");
-    } catch (error) {
-      console.error("Failed to add to wishlist:", error);
-      alert("Failed to add to wishlist. Please try again.");
-    }
-  };
-
   return (
-    <div className="border rounded-xl p-4 shadow-md max-w-md mx-auto relative bg-white">
+    <div className="bg-white border border-blue-100 rounded-2xl shadow-sm hover:shadow-lg transition-shadow max-w-md mx-auto relative flex flex-col">
       {/* Property Image and Link to Details */}
-      <Link to={`/property/${property._id}`}>
+      <Link to={`/property/${property._id}`} className="block">
         <img
           src={`http://localhost:4000${property.image}`}
           alt="Flat"
-          className="w-full h-48 object-cover rounded-lg mb-4"
+          className="w-full h-48 object-cover rounded-t-2xl bg-blue-100"
         />
-        <h2 className="text-xl font-bold text-gray-800">{property.houseName}</h2>
-        <p className="text-gray-600">{property.address}</p>
-
-        {/* Room and Rent Information */}
-        <div className="flex justify-between items-center mt-2">
-          <p className="text-sm text-gray-700">Rooms: {property.rooms}</p>
-          <p className="text-sm font-semibold text-green-600">Price: ${property.price}</p>
+        <div className="p-4">
+          <h2 className="text-lg font-bold text-blue-900 mb-1 truncate">
+            {property.houseName}
+          </h2>
+          <p className="text-blue-500 text-sm mb-2 truncate">
+            {property.address}
+          </p>
+          {/* Room and Rent Information */}
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-xs text-blue-400">
+              Rooms: {property.rooms}
+            </span>
+            <span className="text-base font-semibold text-blue-700">
+              {property.price}৳
+            </span>
+          </div>
         </div>
       </Link>
-
-      {/* Add to Wishlist Button */}
-      <button
-        onClick={handleAddToWishlist}
-        className="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
-      >
-        <img src="/heart.png" alt="Add to Wishlist" className="w-6 h-6" />
-      </button>
     </div>
   );
 };

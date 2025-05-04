@@ -12,10 +12,9 @@ export default function MyAdvertisement() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:4000/api/properties",
-          { withCredentials: true }
-        );
+        const res = await axios.get("http://localhost:4000/api/properties", {
+          withCredentials: true,
+        });
         setProperties(res.data.properties);
       } catch (err) {
         console.error("Failed to load your advertisements:", err);
@@ -25,47 +24,29 @@ export default function MyAdvertisement() {
   }, []);
 
   return (
-    <div>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+    <div className="w-full">
+      <h2 className="text-2xl font-semibold text-blue-900 mb-8 text-center tracking-tight">
         My Advertisements
       </h2>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "20px",
-        }}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {properties.map((p) => (
           <div
             key={p._id}
             onClick={() => navigate(`/properties/${p._id}`)}
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#fff",
-              padding: "15px",
-              borderRadius: "8px",
-              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-            }}
+            className="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow border border-blue-100 hover:border-blue-300 group"
           >
             {p.image && (
               <img
                 src={`http://localhost:4000${p.image}`}
                 alt={p.houseName}
-                style={{
-                  width: "100%",
-                  height: "150px",
-                  objectFit: "cover",
-                  borderRadius: "4px",
-                }}
+                className="w-full h-40 object-cover rounded-md mb-3 group-hover:opacity-90 transition-opacity"
               />
             )}
-            <h3 style={{ margin: "10px 0 5px" }}>{p.houseName}</h3>
-            <p style={{ fontSize: "14px", marginBottom: "5px" }}>
-              {p.address}
-            </p>
-            <p style={{ fontWeight: "bold" }}>Price: {p.price}৳</p>
+            <h3 className="text-lg font-bold text-blue-800 mb-1 truncate">
+              {p.houseName}
+            </h3>
+            <p className="text-sm text-blue-600 mb-1 truncate">{p.address}</p>
+            <p className="font-semibold text-blue-700">Price: {p.price}৳</p>
           </div>
         ))}
       </div>

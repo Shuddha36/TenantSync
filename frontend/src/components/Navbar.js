@@ -19,22 +19,33 @@ const Navbar = ({ user }) => {
   };
 
   return (
-    <nav className="flex flex-row justify-between items-center bg-black p-4 text-white shadow-md">
-      <div className="text-xl font-bold">
-        <Link to="/" className="hover:text-gray-300">
-          TenantSync
-        </Link>
+    <nav className="sticky top-0 z-50 flex flex-row justify-between items-center bg-blue-200 border-b border-blue-300 px-6 py-3 shadow-sm backdrop-blur">
+      <div className="flex items-center space-x-2">
+        <img src="/TS.png" alt="TenantSync Logo" className="h-8 w-8" />
+        <div className="text-lg font-semibold text-blue-900 tracking-tight">
+          <Link to="/" className="hover:text-blue-600 transition-colors">
+            TenantSync
+          </Link>
+        </div>
       </div>
-      <div className="flex space-x-4">
+      <div className="flex space-x-4 items-center">
         {user ? (
           <>
-            <span>Welcome, {user.username}</span>
-            <Link to={getProfileLink()} className="hover:text-gray-300">
+            <span className="text-blue-800 text-sm">
+              Welcome, {user.username}
+            </span>
+            <Link
+              to={getProfileLink()}
+              className="text-blue-700 hover:text-blue-900 px-3 py-1 rounded transition-colors text-sm font-medium"
+            >
               Profile
             </Link>
           </>
         ) : (
-          <Link to="/login" className="hover:text-gray-300">
+          <Link
+            to="/login"
+            className="text-blue-700 hover:text-blue-900 px-3 py-1 rounded transition-colors text-sm font-medium"
+          >
             Login
           </Link>
         )}

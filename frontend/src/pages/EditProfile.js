@@ -16,7 +16,6 @@ const EditProfile = ({ user }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
-  // const userId = localStorage.getItem("myKey");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -103,120 +102,143 @@ const EditProfile = ({ user }) => {
   };
 
   if (loading) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-blue-50">
+        <span className="text-blue-400 text-lg">Loading...</span>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-blue-50">
+        <span className="text-blue-600 text-lg">Error: {error}</span>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
-      {success && <div className="text-center text-green-500 mb-4">{success}</div>}
-      {error && <div className="text-center text-red-500 mb-4">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Profile Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="block w-full"
-          />
-          {profileData.profileImage && (
-            <img
-              src={profileData.profileImage}
-              alt="Profile Preview"
-              className="w-32 h-32 rounded-full mt-4"
+    <div className="min-h-screen flex items-center justify-center bg-blue-50">
+      <div className="w-full max-w-lg p-8 bg-white rounded-2xl shadow-lg border border-blue-100">
+        <h1 className="text-3xl font-semibold text-blue-700 mb-8 text-center tracking-tight">
+          Edit Profile
+        </h1>
+        {success && (
+          <div className="text-center text-blue-500 mb-4">{success}</div>
+        )}
+        {error && <div className="text-center text-blue-600 mb-4">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col items-center gap-2">
+            <label className="font-medium text-blue-700">Profile Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="block w-full text-blue-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
             />
-          )}
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Username</label>
-          <input
-            type="text"
-            name="username"
-            value={profileData.username}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={profileData.email}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">First Name</label>
-          <input
-            type="text"
-            name="firstName"
-            value={profileData.firstName}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Last Name</label>
-          <input
-            type="text"
-            name="lastName"
-            value={profileData.lastName}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Phone</label>
-          <input
-            type="text"
-            name="phone"
-            value={profileData.phone}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">Address</label>
-          <input
-            type="text"
-            name="address"
-            value={profileData.address}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block font-semibold mb-2">About</label>
-          <textarea
-            name="about"
-            value={profileData.about}
-            onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-        <div className="flex justify-between mt-6">
-          <button
-            type="submit"
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Save Changes
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          >
-            Delete Profile
-          </button>
-        </div>
-      </form>
+            {profileData.profileImage && (
+              <img
+                src={profileData.profileImage}
+                alt="Profile Preview"
+                className="w-24 h-24 rounded-full border-4 border-blue-200 mt-2 object-cover shadow"
+              />
+            )}
+          </div>
+          <div>
+            <label className="block text-blue-700 mb-1">Username</label>
+            <input
+              type="text"
+              name="username"
+              value={profileData.username}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300"
+              placeholder="Username"
+            />
+          </div>
+          <div>
+            <label className="block text-blue-700 mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={profileData.email}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300"
+              placeholder="Email"
+            />
+          </div>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-blue-700 mb-1">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                value={profileData.firstName}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300"
+                placeholder="First Name"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-blue-700 mb-1">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={profileData.lastName}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300"
+                placeholder="Last Name"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-blue-700 mb-1">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              value={profileData.phone}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300"
+              placeholder="Phone"
+            />
+          </div>
+          <div>
+            <label className="block text-blue-700 mb-1">Address</label>
+            <input
+              type="text"
+              name="address"
+              value={profileData.address}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300"
+              placeholder="Address"
+            />
+          </div>
+          <div>
+            <label className="block text-blue-700 mb-1">About</label>
+            <textarea
+              name="about"
+              value={profileData.about}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 bg-blue-50 text-blue-900 placeholder-blue-300 min-h-[80px]"
+              placeholder="Tell us about yourself..."
+            />
+          </div>
+          <div className="flex justify-between items-center pt-4">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition-colors"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="bg-blue-100 text-blue-700 px-6 py-2 rounded-lg font-semibold border border-blue-200 hover:bg-blue-200 transition-colors"
+            >
+              Delete Profile
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

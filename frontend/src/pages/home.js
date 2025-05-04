@@ -31,25 +31,32 @@ const Home = () => {
   });
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl text-center font-bold mb-4">
-        Welcome to TenantSync 🏠
+    <div className="min-h-screen bg-blue-50 flex flex-col items-center py-10 px-2">
+      <h1 className="text-4xl font-bold text-blue-900 mb-6 text-center tracking-tight">
+        Welcome to TenantSync{" "}
+        <span role="img" aria-label="house">
+          🏠
+        </span>
       </h1>
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        roomFilter={roomFilter}
-        setRoomFilter={setRoomFilter}
-      />
-      <div className="flex flex-wrap justify-center">
+      <div className="w-full max-w-3xl mb-8">
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          roomFilter={roomFilter}
+          setRoomFilter={setRoomFilter}
+        />
+      </div>
+      <div className="w-full max-w-6xl">
         {filteredProperties.length > 0 ? (
-          filteredProperties.map((property) => (
-            <PropertyCard key={property._id} property={property} />
-          ))
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProperties.map((property) => (
+              <PropertyCard key={property._id} property={property} />
+            ))}
+          </div>
         ) : (
-          <p className="text-center text-gray-500 mt-8">
-            No matching flats found.
-          </p>
+          <div className="flex flex-col items-center justify-center h-64 bg-blue-100 rounded-lg shadow-sm">
+            <p className="text-blue-400 text-lg">No matching flats found.</p>
+          </div>
         )}
       </div>
     </div>

@@ -64,7 +64,7 @@ exports.getAllRentalRequests = async (req, res) => {
       status: "pending",
     })
       .populate("property")
-      .populate("tenant", "username email");
+      .populate("tenant", "username email phone");
 
     res.status(200).json(requests);
   } catch (err) {
@@ -81,8 +81,11 @@ exports.getUserRentalRequest = async (req, res) => {
     if (!tenantId) return res.status(401).json({ error: "Unauthorized" });
 
     // Fetch all rental requests for the tenant
-    const requests = await RentalRequest.find({ tenant: tenantId })
-      .populate("property", "houseName address")
+    const requests = await RentalRequest.find({ tenant: tenantId }).populate({
+      path: "property",
+      populate: { path: "owner", select: "username email phone" },
+      select: "houseName address owner",
+    });
 
     res.status(200).json(requests);
   } catch (err) {

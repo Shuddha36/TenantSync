@@ -41,7 +41,9 @@ export default function Register() {
         err.response &&
         err.response.data &&
         err.response.data.message &&
-        err.response.data.message.toLowerCase().includes("email is already registered")
+        err.response.data.message
+          .toLowerCase()
+          .includes("email is already registered")
       ) {
         setError("Email is already registered.");
       } else {
@@ -53,205 +55,80 @@ export default function Register() {
   return (
     <>
       {error && (
-        <div
-          style={{
-            position: "fixed",
-            top: "0",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#000",
-            color: "#fff",
-            padding: "12px 24px",
-            borderRadius: "0 0 4px 4px",
-            zIndex: 9999,
-            fontSize: "16px",
-          }}
-        >
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 bg-blue-900 text-white px-6 py-3 rounded-b-md z-50 text-base shadow-md">
           {error}
         </div>
       )}
-
       {success && (
-        <div
-          style={{
-            position: "fixed",
-            top: "0",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#000",
-            color: "#fff",
-            padding: "12px 24px",
-            borderRadius: "0 0 4px 4px",
-            zIndex: 9999,
-            fontSize: "16px",
-          }}
-        >
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 bg-blue-700 text-white px-6 py-3 rounded-b-md z-50 text-base shadow-md">
           {success}
         </div>
       )}
-
-      <div
-        style={{
-          minHeight: "100vh",
-          backgroundColor: "#000",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "0 16px",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div className="min-h-screen bg-blue-50 flex justify-center items-center px-4">
+        <div className="flex flex-col items-center w-full">
           <form
             onSubmit={handleSubmit}
-            style={{
-              backgroundColor: "#fff",
-              padding: "32px",
-              borderRadius: "8px",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "320px",
-              color: "#000",
-            }}
+            className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm text-blue-900"
           >
-            <h2
-              style={{
-                fontSize: "24px",
-                marginBottom: "20px",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
+            <h2 className="text-2xl mb-6 font-bold text-center text-blue-800">
               Register
             </h2>
-
-            <div style={{ marginBottom: "16px" }}>
+            <div className="mb-4">
               <input
                 name="username"
                 onChange={handleChange}
                 placeholder="Username"
-                style={{
-                  width: "80%",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  outline: "none",
-                  transition: "border 0.3s",
-                  color: "#000",
-                }}
+                className="w-full p-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-100 placeholder-blue-400 transition"
               />
             </div>
-
-            <div style={{ marginBottom: "16px" }}>
+            <div className="mb-4">
               <input
                 name="email"
                 onChange={handleChange}
                 placeholder="Email"
-                style={{
-                  width: "80%",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  outline: "none",
-                  transition: "border 0.3s",
-                  color: "#000",
-                }}
+                className="w-full p-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-100 placeholder-blue-400 transition"
               />
             </div>
-
-            <div style={{ marginBottom: "24px" }}>
+            <div className="mb-6">
               <input
                 type="password"
                 name="password"
                 onChange={handleChange}
                 placeholder="Password"
-                style={{
-                  width: "80%",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  outline: "none",
-                  transition: "border 0.3s",
-                  color: "#000",
-                }}
+                className="w-full p-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-100 placeholder-blue-400 transition"
               />
             </div>
-
-            <div style={{ marginBottom: "24px" }}>
+            <div className="mb-6">
               <select
                 name="role"
                 value={form.role}
                 onChange={handleChange}
-                style={{
-                  width: "85%",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  outline: "none",
-                  color: "#000",
-                }}
+                className="w-full p-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-100 text-blue-900 transition"
               >
-                <option value="Tenant">Tenant</option>
-                <option value="Owner">Owner</option>
+                <option value="Tenant" className="text-blue-700">
+                  Tenant
+                </option>
+                <option value="Owner" className="text-blue-700">
+                  Owner
+                </option>
               </select>
             </div>
-
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className="flex justify-center">
               <button
                 type="submit"
-                style={{
-                  width: "30%",
-                  padding: "8px",
-                  backgroundColor: "#000",
-                  color: "#fff",
-                  borderRadius: "9999px",
-                  fontSize: "14px",
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "background-color 0.3s",
-                }}
-                onMouseOver={(e) => (e.target.style.backgroundColor = "#333")}
-                onMouseOut={(e) => (e.target.style.backgroundColor = "#000")}
+                className="w-1/2 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-sm font-semibold transition-colors shadow-sm"
               >
                 Sign Up
               </button>
             </div>
           </form>
-
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "14px",
-              color: "#fff",
-              marginTop: "16px",
-            }}
-          >
+          <p className="text-center text-sm text-blue-700 mt-6">
             Already registered?{" "}
             <span
-              style={{ textDecoration: "underline", cursor: "pointer" }}
+              className="underline cursor-pointer hover:text-blue-900"
               onClick={() => navigate("/login")}
             >
               Login
-            </span>
-          </p>
-
-          {/* Add forgot password link */}
-          <p
-            style={{
-              textAlign: "center",
-              fontSize: "14px",
-              color: "#fff",
-              marginTop: "16px",
-            }}
-          >
-            Forgot your password?{" "}
-            <span
-              style={{ textDecoration: "underline", cursor: "pointer" }}
-              onClick={() => navigate("/forgot-password")}
-            >
-              Reset here
             </span>
           </p>
         </div>

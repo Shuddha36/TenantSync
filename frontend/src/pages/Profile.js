@@ -6,7 +6,6 @@ const Profile = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  // const userId = localStorage.getItem("myKey");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -36,57 +35,65 @@ const Profile = ({ user }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">{profileData.role} Profile </h1>
-      {profileData ? (
-        <div>
-          {profileData.profileImage && (
-            <div className="mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-blue-50">
+      <div className="w-full max-w-xl p-6 bg-white rounded-2xl shadow-md border border-blue-100">
+        <h1 className="text-2xl font-bold text-blue-800 mb-6 text-center">
+          {profileData.role} Profile
+        </h1>
+        {profileData ? (
+          <div className="flex flex-col items-center gap-6">
+            {profileData.profileImage && (
               <img
                 src={profileData.profileImage}
                 alt="Profile"
-                className="w-32 h-32 rounded-full mx-auto"
+                className="w-24 h-24 rounded-full border-2 border-blue-200 object-cover mb-2"
               />
+            )}
+            <div className="w-full grid grid-cols-1 gap-4">
+              <div className="flex justify-between items-center border-b border-blue-100 pb-2">
+                <span className="text-blue-700 font-medium">Username</span>
+                <span className="text-blue-900">{profileData.username}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-blue-100 pb-2">
+                <span className="text-blue-700 font-medium">Email</span>
+                <span className="text-blue-900">{profileData.email}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-blue-100 pb-2">
+                <span className="text-blue-700 font-medium">First Name</span>
+                <span className="text-blue-900">{profileData.firstName}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-blue-100 pb-2">
+                <span className="text-blue-700 font-medium">Last Name</span>
+                <span className="text-blue-900">{profileData.lastName}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-blue-100 pb-2">
+                <span className="text-blue-700 font-medium">Phone</span>
+                <span className="text-blue-900">{profileData.phone}</span>
+              </div>
+              <div className="flex justify-between items-center border-b border-blue-100 pb-2">
+                <span className="text-blue-700 font-medium">Address</span>
+                <span className="text-blue-900">{profileData.address}</span>
+              </div>
             </div>
-          )}
-
-          <p className="text-lg">
-            <span className="font-semibold">Username:</span>{" "}
-            {profileData.username}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">Email:</span> {profileData.email}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">First Name:</span>{" "}
-            {profileData.firstName}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">Last Name:</span>{" "}
-            {profileData.lastName}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">Phone:</span> {profileData.phone}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">Address:</span>{" "}
-            {profileData.address}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">About:</span> {profileData.about}
-          </p>
-          <div className="flex justify-between mt-6">
+            <div className="w-full mt-2">
+              <span className="text-blue-700 font-medium">About</span>
+              <p className="text-blue-900 bg-blue-50 rounded p-2 mt-1 min-h-[40px] text-sm">
+                {profileData.about}
+              </p>
+            </div>
             <button
               onClick={() => navigate("/editprofile")}
-              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-600"
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-semibold transition"
             >
               Edit Profile
             </button>
           </div>
-        </div>
-      ) : (
-        <p className="text-gray-500">No profile data available.</p>
-      )}
+        ) : (
+          <p className="text-blue-400 text-center">
+            No profile data available.
+          </p>
+        )}
+      </div>
     </div>
   );
 };

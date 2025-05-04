@@ -77,164 +77,57 @@ export default function Login({ setUser }) {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#000",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "0 16px",
-        position: "relative",
-      }}
-    >
+    <div className="min-h-screen bg-blue-50 flex justify-center items-center px-4 relative">
       {/* Floating Error Message */}
       {error && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#000",
-            color: "#fff",
-            padding: "10px 20px",
-            borderRadius: "4px",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-            fontSize: "14px",
-            zIndex: "1000",
-          }}
-        >
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-blue-900 text-white px-6 py-3 rounded-b-md z-50 text-base shadow-md">
           {error}
         </div>
       )}
-
       {/* Floating Welcome Message */}
       {welcome && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#000",
-            color: "#fff",
-            padding: "10px 20px",
-            borderRadius: "4px",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-            fontSize: "14px",
-            zIndex: "1000",
-          }}
-        >
+        <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-blue-700 text-white px-6 py-3 rounded-b-md z-50 text-base shadow-md">
           {welcome}
         </div>
       )}
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {/* Login Form */}
+      <div className="flex flex-col items-center w-full">
         <form
           onSubmit={handleSubmit}
-          style={{
-            backgroundColor: "#fff",
-            padding: "40px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            width: "320px",
-            color: "#000",
-          }}
+          className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm text-blue-900"
         >
-          <h2
-            style={{
-              fontSize: "24px",
-              marginBottom: "24px",
-              fontWeight: "bold",
-              textAlign: "center",
-            }}
-          >
+          <h2 className="text-2xl mb-6 font-bold text-center text-blue-800">
             Login
           </h2>
-
-          <div style={{ marginBottom: "16px" }}>
+          <div className="mb-4">
             <input
               name="email"
               onChange={handleChange}
               placeholder="Email"
-              style={{
-                width: "80%",
-                padding: "12px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                fontSize: "16px",
-                outline: "none",
-                transition: "border 0.3s",
-                color: "#000",
-              }}
+              className="w-full p-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-100 placeholder-blue-400 transition"
             />
           </div>
-
-          <div style={{ marginBottom: "24px" }}>
+          <div className="mb-6">
             <input
               type="password"
               name="password"
               onChange={handleChange}
               placeholder="Password"
-              style={{
-                width: "80%",
-                padding: "12px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-                fontSize: "16px",
-                outline: "none",
-                transition: "border 0.3s",
-                color: "#000",
-              }}
+              className="w-full p-3 border border-blue-200 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-100 placeholder-blue-400 transition"
             />
           </div>
-
-          {/* Button Container */}
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="flex justify-center">
             <button
               type="submit"
-              style={{
-                width: "30%",
-                padding: "10px",
-                backgroundColor: "#000",
-                color: "#fff",
-                borderRadius: "9999px",
-                fontSize: "14px",
-                border: "none",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-              }}
-              onMouseOver={(e) => (e.target.style.backgroundColor = "#333")}
-              onMouseOut={(e) => (e.target.style.backgroundColor = "#000")}
+              className="w-1/2 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-sm font-semibold transition-colors shadow-sm"
             >
               Login
             </button>
           </div>
         </form>
-
-        {/* Registration Redirect Text */}
-        <p
-          style={{
-            color: "#fff",
-            fontSize: "14px",
-            marginTop: "16px",
-          }}
-        >
+        <p className="text-center text-sm text-blue-700 mt-6">
           Did not sign up yet? then{" "}
           <span
-            style={{
-              textDecoration: "underline",
-              cursor: "pointer",
-              color: "#fff",
-            }}
+            className="underline cursor-pointer hover:text-blue-900"
             onClick={() => navigate("/register")}
           >
             Register
