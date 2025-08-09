@@ -1,13 +1,12 @@
 // src/components/CreateAdvertisement.js
 import React, { useState } from "react";
 import axios from "axios";
-
 axios.defaults.withCredentials = true;
-
 export default function CreateAdvertisement() {
   const [form, setForm] = useState({
     houseName: "",
     address: "",
+    contact: "",
     rooms: "",
     kitchens: "",
     bedrooms: "",
@@ -15,26 +14,26 @@ export default function CreateAdvertisement() {
     squareFeet: "",
     rentDays: "",
     price: "", // NEW: Price of the flat
+    description: "", // NEW: Description field
   });
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
-
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("houseName", form.houseName);
     formData.append("address", form.address);
+    //contact
+    formData.append("contact", form.contact);
     formData.append("rooms", form.rooms);
     formData.append("kitchens", form.kitchens);
     formData.append("bedrooms", form.bedrooms);
@@ -42,6 +41,7 @@ export default function CreateAdvertisement() {
     formData.append("squareFeet", form.squareFeet);
     formData.append("rentDays", form.rentDays);
     formData.append("price", form.price); // NEW: append price
+    formData.append("description", form.description); // NEW: append description
     if (image) {
       formData.append("image", image);
     }
@@ -58,7 +58,6 @@ export default function CreateAdvertisement() {
       setMessage("Error creating advertisement.");
     }
   };
-
   return (
     <div className="max-w-xl mx-auto bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl shadow-lg mt-10">
       <h2 className="text-2xl font-semibold text-center text-blue-800 mb-8 tracking-tight">
@@ -93,6 +92,19 @@ export default function CreateAdvertisement() {
             placeholder="Enter address"
           />
         </div>
+        {/* for contact field*/}
+        <div className="col-span-1 md:col-span-2 flex flex-col">
+          <label className="font-medium text-blue-700 mb-1">Contact Info</label>
+          <input
+            name="contact"
+            value={form.contact}
+            onChange={handleChange}
+            required
+            className="px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-blue-900 placeholder-blue-300"
+            placeholder="Enter Personal Contact"
+          />
+        </div>
+        
         {/* Rooms */}
         <div className="flex flex-col">
           <label className="font-medium text-blue-700 mb-1">Rooms</label>
@@ -163,20 +175,6 @@ export default function CreateAdvertisement() {
             min="0"
           />
         </div>
-        {/* Rent Days */}
-        <div className="flex flex-col">
-          <label className="font-medium text-blue-700 mb-1">Rent Days</label>
-          <input
-            name="rentDays"
-            type="number"
-            value={form.rentDays}
-            onChange={handleChange}
-            required
-            className="px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-blue-900 placeholder-blue-300"
-            placeholder="0"
-            min="0"
-          />
-        </div>
         {/* Price */}
         <div className="flex flex-col">
           <label className="font-medium text-blue-700 mb-1">Price</label>
@@ -189,6 +187,18 @@ export default function CreateAdvertisement() {
             className="px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-blue-900 placeholder-blue-300"
             placeholder="0"
             min="0"
+          />
+        </div>
+        {/* NEW: Description Field */}
+        <div className="col-span-1 md:col-span-2 flex flex-col">
+          <label className="font-medium text-blue-700 mb-1">Description</label>
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            rows="4"
+            className="px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-blue-900 placeholder-blue-300"
+            placeholder="Enter Related description"
           />
         </div>
         {/* House Image */}

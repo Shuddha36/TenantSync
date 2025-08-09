@@ -167,24 +167,30 @@ const PropertyDetails = ({ user }) => {
             <p className="text-blue-800 mb-2">{property.owner.username}</p>
             <p className="text-blue-700 font-semibold">Contact:</p>
             <p className="text-blue-800 mb-2">
-              {property.owner.phone || property.owner.email}
-            </p>
-            <p className="text-blue-700 font-semibold">Square Feet:</p>
-            <p className="text-blue-800 mb-2">{property.squareFeet}</p>
+              {property.contact}
             <p className="text-blue-700 font-semibold">Price:</p>
             <p className="text-blue-800 mb-2">{property.price}৳</p>
+            </p>
+            
           </div>
           <div>
-            <p className="text-blue-700 font-semibold">Rooms:</p>
+            <p className="text-blue-700 font-semibold">Total Rooms:</p>
             <p className="text-blue-800 mb-2">{property.rooms}</p>
-            <p className="text-blue-700 font-semibold">Kitchens:</p>
-            <p className="text-blue-800 mb-2">{property.kitchens}</p>
             <p className="text-blue-700 font-semibold">Washrooms:</p>
             <p className="text-blue-800 mb-2">{property.washrooms}</p>
             <p className="text-blue-700 font-semibold">Bedrooms:</p>
             <p className="text-blue-800 mb-2">{property.bedrooms}</p>
+            <p className="text-blue-700 font-semibold">Square Feet:</p>
+            <p className="text-blue-800 mb-2">{property.squareFeet}</p>
           </div>
         </div>
+          {/* NEW: Description Section */}
+  <div className="mb-4">
+    <p className="text-blue-700 font-semibold">Description:</p>
+    <p className="text-blue-800 bg-blue-50 p-3 rounded-lg border border-blue-100 italic">
+      {property.description}
+    </p>
+  </div>
         <p className="text-xs text-blue-400 mb-6">
           Posted: {moment(property.createdAt).fromNow()}
         </p>

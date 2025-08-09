@@ -29,24 +29,26 @@ exports.createAdvertisement = async (req, res) => {
     const {
       houseName,
       address,
+      contact,
       rooms,
       kitchens,
       bedrooms,
       washrooms,
       squareFeet,
-      rentDays,
+      description,
       price,        // NEW price field
     } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : "";
     const property = new Property({
       houseName,
       address,
+      contact,
       rooms,
       kitchens,
       bedrooms,
       washrooms,
       squareFeet,
-      rentDays,
+      description,
       price,        // save price in database
       image,
       owner: ownerId,
