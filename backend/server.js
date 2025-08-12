@@ -24,12 +24,20 @@ const reportRoutes = require("./routes/reportRoutes");
 // express app
 const app = express();
 
+// Trust Render/hosting proxy so secure cookies are set correctly behind HTTPS
+// (required when cookie.secure=true and the app is behind a reverse proxy)
+app.set("trust proxy", 1);
+
 // Allow requests from your frontend and include cookies
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" 
-      ? ["https://tenant-sync.vercel.app", "https://www.tenant-sync.vercel.app"]
-      : ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin:
+      process.env.NODE_ENV === "production"
+        ? [
+            "https://tenant-sync.vercel.app",
+            "https://www.tenant-sync.vercel.app",
+          ]
+        : ["http://localhost:3000", "http://127.0.0.1:3000"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
@@ -51,6 +59,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     name: "sessionId", // Custom name for easier management
+    // Ensure secure cookies work behind a reverse proxy (Render)
+    proxy: true,
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI,
       collectionName: "sessions",
@@ -58,11 +68,13 @@ app.use(
       touchAfter: 24 * 3600,
     }),
     cookie: {
-      secure: true, // Always true for production cross-origin
+      // Use secure cookies with cross-site in production; be lax in dev for http://localhost
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       maxAge: 86400000,
-      sameSite: "none", // Required for cross-origin cookies
-      domain: undefined, // Don't set domain for cross-origin
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      // Don't set domain for cross-origin; rely on default (backend host)
+      domain: undefined,
     },
   })
 );
