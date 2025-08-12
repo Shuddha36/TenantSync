@@ -231,7 +231,7 @@ const PropertyDetails = ({ user }) => {
             <p className="text-blue-700 font-semibold">Owner:</p>
             <p className="text-blue-800 mb-2">{property.owner?.username ?? "Unknown"}</p>
 
-            <p className="text-blue-700 font-semibold">Contact:</p>
+            <p className="text-blue-700 font-semibold">Urgent Contact:</p>
             <p className="text-blue-800 mb-2">{property.contact}</p>
 
             <p className="text-blue-700 font-semibold">Price:</p>
