@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profile");
@@ -26,8 +27,12 @@ const app = express();
 // Allow requests from your frontend and include cookies
 app.use(
   cors({
-    origin: "https://tenant-sync.vercel.app",
+    origin: process.env.NODE_ENV === "production" 
+      ? "https://tenant-sync.vercel.app" 
+      : ["http://localhost:3000", "http://127.0.0.1:3000"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -41,13 +46,20 @@ app.use((req, res, next) => {
 // Session middleware (required for session-based auth)
 app.use(
   session({
-    secret: "your-secret-key", // Change this to a strong secret in production!
+    secret: process.env.SESSION_SECRET || "your-secret-key", // Use environment variable for secret
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+      ttl: 24 * 60 * 60, // 1 day in seconds
+      touchAfter: 24 * 3600, // lazy session update
+    }),
     cookie: {
-      secure: true, // set to true if using HTTPS in production
+      secure: process.env.NODE_ENV === "production", // true for HTTPS in production, false for development
       httpOnly: true,
       maxAge: 86400000, // 1 day in milliseconds
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Allow cross-site cookies in production
     },
   })
 );
