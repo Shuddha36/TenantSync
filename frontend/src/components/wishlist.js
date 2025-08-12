@@ -64,7 +64,7 @@ const Wishlist = ({ user }) => {
                   </svg>
                 </button>
                 <img
-                  src={item.property.image}
+                  src={item.property.mainImage}
                   alt={item.property.houseName}
                   className="w-full h-44 object-cover rounded-t-xl bg-blue-100"
                 />

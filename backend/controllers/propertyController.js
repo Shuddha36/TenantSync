@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Create a new advertisement (property)
+
 // Create a new advertisement (property)
 exports.createAdvertisement = async (req, res) => {
   try {
@@ -25,30 +25,48 @@ exports.createAdvertisement = async (req, res) => {
     if (!ownerId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    // Destructure all fields, including price
     const {
       houseName,
       address,
+      contact,
       rooms,
       kitchens,
       bedrooms,
       washrooms,
       squareFeet,
-      rentDays,
-      price,        // NEW price field
+      description,
+      price,      
     } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : "";
+
+    // Safely handle req.files (multer)
+    const files = req.files || {};
+
+    const mainImage = files.mainImage && files.mainImage[0]
+      ? `/uploads/${files.mainImage[0].filename}`
+      : "";
+
+    const roomImages = files.roomImages
+      ? files.roomImages.map(file => `/uploads/${file.filename}`)
+      : [];
+
+    // Deduplicate (safety)
+    const uniqueRoomImages = Array.from(new Set(roomImages));
+
+
     const property = new Property({
       houseName,
       address,
+      contact,
       rooms,
       kitchens,
       bedrooms,
       washrooms,
       squareFeet,
-      rentDays,
-      price,        // save price in database
-      image,
+      description,
+      price,     
+      price,
+      mainImage,
+      roomImages: uniqueRoomImages,
       owner: ownerId,
     });
     await property.save();
@@ -57,6 +75,12 @@ exports.createAdvertisement = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+// Export the multer middleware for property image upload
+exports.uploadPropertyImages = upload.fields([
+  {name: 'mainImage', maxCount: 1},
+  {name: 'roomImages', maxCount: 3}
+]);
 
 // Get rental requests for properties owned by the logged-in owner
 exports.getRentalRequests = async (req, res) => {
@@ -137,8 +161,6 @@ exports.getProperties = async (req, res) => {
 };
 
 
-// Export the multer middleware for property image upload
-exports.uploadPropertyImage = upload.single("image");
 // PUBLIC: Fetch all properties for homepage
 exports.getAllProperties = async (req, res) => {
   try {

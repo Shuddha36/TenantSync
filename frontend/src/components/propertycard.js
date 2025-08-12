@@ -31,7 +31,7 @@ const PropertyCard = ({ property }) => {
       {/* Property Image and Link to Details */}
       <Link to={`/property/${property._id}`} className="block">
         <img
-          src={`http://localhost:4000${property.image}`}
+          src={`http://localhost:4000${property.mainImage}`}
           alt="Flat"
           className="w-full h-48 object-cover rounded-t-2xl bg-blue-100"
         />

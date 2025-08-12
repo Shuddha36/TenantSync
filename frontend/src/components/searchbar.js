@@ -35,6 +35,12 @@ const SearchBar = ({
         <option value="4" className="text-blue-500">
           4 Rooms
         </option>
+        <option value="5" className="text-blue-500">
+          5 Rooms
+        </option>
+        <option value="6" className="text-blue-500">
+          6 Rooms
+        </option>
       </select>
     </div>
   );
