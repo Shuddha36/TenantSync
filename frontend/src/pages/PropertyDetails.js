@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
+import { Home, Heart, Flag, X } from "lucide-react";
 import ReviewForm from "./ReviewForm";
 import ReviewList from "./ReviewList";
 
@@ -20,6 +21,8 @@ const PropertyDetails = ({ user }) => {
   const [userId, setUserId] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
 
   // Fetch reviews for this property
   const fetchReviews = async () => {
@@ -167,6 +170,17 @@ const PropertyDetails = ({ user }) => {
     }
   };
 
+  // Image modal functions
+  const openImageModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageModal(true);
+  };
+
+  const closeImageModal = () => {
+    setShowImageModal(false);
+    setSelectedImage("");
+  };
+
   useEffect(() => {
     fetchProperty();
     fetchComments();
@@ -198,7 +212,8 @@ const PropertyDetails = ({ user }) => {
           <img
             src={mainImageUrl}
             alt={property.houseName}
-            className="w-full rounded-lg mb-4 border border-blue-200 shadow-sm object-cover max-h-96"
+            className="w-full rounded-lg mb-4 border border-blue-200 shadow-sm object-cover max-h-96 cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => openImageModal(mainImageUrl)}
           />
         ) : (
           <div className="w-full h-56 rounded-lg mb-4 border border-blue-200 shadow-sm bg-blue-100 flex items-center justify-center text-blue-400">
@@ -216,7 +231,8 @@ const PropertyDetails = ({ user }) => {
                   key={index}
                   src={`http://localhost:4000${image}`}
                   alt={`Room ${index + 1}`}
-                  className="w-full h-48 object-cover rounded-lg border border-blue-200 shadow-sm"
+                  className="w-full h-48 object-cover rounded-lg border border-blue-200 shadow-sm cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => openImageModal(`http://localhost:4000${image}`)}
                 />
               ))}
             </div>
@@ -268,22 +284,25 @@ const PropertyDetails = ({ user }) => {
         <div className="flex flex-wrap gap-4 mb-8">
           <button
             onClick={() => navigate("/payment", { state: { property, user } })}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center gap-2"
           >
+            <Home size={18} />
             Rent Now
           </button>
 
           <button
             onClick={handleAddToWishlist}
-            className="bg-pink-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-pink-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-pink-300"
+            className="bg-pink-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-pink-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-pink-300 flex items-center gap-2"
           >
+            <Heart size={18} />
             Add to Wishlist
           </button>
 
           <Link
             to={`/report/${property._id}`}
-            className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-red-300"
+            className="bg-red-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors shadow focus:outline-none focus:ring-2 focus:ring-red-300 flex items-center gap-2"
           >
+            <Flag size={18} />
             Report
           </Link>
         </div>
@@ -429,6 +448,29 @@ const PropertyDetails = ({ user }) => {
           </div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {showImageModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={closeImageModal}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <button
+              onClick={closeImageModal}
+              className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-opacity z-10"
+            >
+              <X size={24} />
+            </button>
+            <img
+              src={selectedImage}
+              alt="Full size view"
+              className="max-w-full max-h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,8 +1,10 @@
 // frontend/components/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [reports, setReports] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -38,14 +40,9 @@ const AdminDashboard = () => {
     }
   };
 
-  const viewPropertyDetails = async (propertyId) => {
-    try {
-      const res = await axios.get(`/api/properties/${propertyId}`);
-      setSelectedProperty(res.data.property);
-      setShowModal(true);
-    } catch (err) {
-      console.error("Failed to fetch property details:", err);
-    }
+  const viewPropertyDetails = (propertyId) => {
+    // Redirect to the property details page
+    navigate(`/property/${propertyId}`);
   };
 
   return (

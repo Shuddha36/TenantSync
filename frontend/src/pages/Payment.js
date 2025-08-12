@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CreditCard } from "lucide-react";
 
 const Payment = ({ user }) => {
   const location = useLocation();
@@ -113,8 +114,9 @@ const Payment = ({ user }) => {
         <button
           onClick={handleRentNow}
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow w-full disabled:opacity-50"
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow w-full disabled:opacity-50 flex items-center justify-center gap-2"
         >
+          <CreditCard size={18} />
           {loading ? "Processing..." : "Make Payment"}
         </button>
       </div>
