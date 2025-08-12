@@ -26,7 +26,7 @@ const app = express();
 // Allow requests from your frontend and include cookies
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://tenant-sync.vercel.app",
     credentials: true,
   })
 );
