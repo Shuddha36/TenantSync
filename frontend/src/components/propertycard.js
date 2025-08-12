@@ -10,7 +10,7 @@ const PropertyCard = ({ property }) => {
     const fetchUserId = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/auth/session",
+          "https://tenantsync-backend.onrender.com/api/auth/session",
           {
             withCredentials: true,
           }
@@ -31,7 +31,7 @@ const PropertyCard = ({ property }) => {
       {/* Property Image and Link to Details */}
       <Link to={`/property/${property._id}`} className="block">
         <img
-          src={`http://localhost:4000${property.mainImage}`}
+          src={`https://tenantsync-backend.onrender.com${property.mainImage}`}
           alt="Flat"
           className="w-full h-48 object-cover rounded-t-2xl bg-blue-100"
         />

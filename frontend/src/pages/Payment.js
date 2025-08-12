@@ -41,7 +41,7 @@ const Payment = ({ user }) => {
     }
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:4000/api/rental-requests/", {
+      const res = await fetch("https://tenantsync-backend.onrender.com/api/rental-requests/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

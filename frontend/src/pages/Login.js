@@ -39,7 +39,7 @@ export default function Login({ setUser }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://tenantsync-backend.onrender.com/api/auth/login",
         form
       );
       console.log("Login response:", res.data);

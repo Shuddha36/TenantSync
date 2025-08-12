@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/properties/all");
+        const res = await fetch("https://tenantsync-backend.onrender.com/api/properties/all");
         const data = await res.json();
         setProperties(data.properties || []);
       } catch (err) {

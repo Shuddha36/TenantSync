@@ -8,7 +8,7 @@ const MyRentalHistory = () => {
     const fetchRentalRequests = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/rental-requests/my-requests"
+          "https://tenantsync-backend.onrender.com/api/rental-requests/my-requests"
         );
         console.log(response.data);
         setRentalRequests(response.data);

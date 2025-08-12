@@ -9,7 +9,7 @@ export default function FlatApproval() {
   // Fetch only this owner's pending requests
   const fetchRequests = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/rental-requests", {
+      const res = await fetch("https://tenantsync-backend.onrender.com/api/rental-requests", {
         credentials: "include",
       });
       if (!res.ok) {
@@ -33,7 +33,7 @@ export default function FlatApproval() {
   const handleApprove = async (id) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/rental-requests/${id}`,
+        `https://tenantsync-backend.onrender.com/api/rental-requests/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -51,7 +51,7 @@ export default function FlatApproval() {
   const handleDelete = async (id) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/rental-requests/${id}`,
+        `https://tenantsync-backend.onrender.com/api/rental-requests/${id}`,
         { method: "DELETE", credentials: "include" }
       );
       if (res.ok) setRequests((prev) => prev.filter((r) => r._id !== id));

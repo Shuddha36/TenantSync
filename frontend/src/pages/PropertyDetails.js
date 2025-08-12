@@ -27,7 +27,7 @@ const PropertyDetails = ({ user }) => {
   // Fetch reviews for this property
   const fetchReviews = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/reviews/${id}`, {
+      const res = await axios.get(`https://tenantsync-backend.onrender.com/api/reviews/${id}`, {
         withCredentials: true,
       });
       setReviews(res.data.reviews || res.data);
@@ -39,7 +39,7 @@ const PropertyDetails = ({ user }) => {
   // Fetch property details
   const fetchProperty = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/properties/${id}`, {
+      const res = await axios.get(`https://tenantsync-backend.onrender.com/api/properties/${id}`, {
         withCredentials: true,
       });
       setProperty(res.data.property);
@@ -51,7 +51,7 @@ const PropertyDetails = ({ user }) => {
   // Fetch comments
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/comments/${id}`, {
+      const res = await axios.get(`https://tenantsync-backend.onrender.com/api/comments/${id}`, {
         withCredentials: true,
       });
       // backend might return array or { comments: [...] }
@@ -64,7 +64,7 @@ const PropertyDetails = ({ user }) => {
   // Fetch current session user id (if logged in)
   const fetchUserId = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/auth/session", {
+      const response = await axios.get("https://tenantsync-backend.onrender.com/api/auth/session", {
         withCredentials: true,
       });
       if (response.data.loggedIn) {
@@ -80,7 +80,7 @@ const PropertyDetails = ({ user }) => {
     if (!newComment.trim()) return;
     try {
       await axios.post(
-        `http://localhost:4000/api/comments/${id}`,
+        `https://tenantsync-backend.onrender.com/api/comments/${id}`,
         { content: newComment },
         { withCredentials: true }
       );
@@ -96,7 +96,7 @@ const PropertyDetails = ({ user }) => {
     if (!newComment.trim()) return;
     try {
       await axios.post(
-        `http://localhost:4000/api/comments/${commentId}/reply`,
+        `https://tenantsync-backend.onrender.com/api/comments/${commentId}/reply`,
         { content: newComment },
         { withCredentials: true }
       );
@@ -112,7 +112,7 @@ const PropertyDetails = ({ user }) => {
   const handleLikeDislike = async (commentId, type) => {
     try {
       await axios.post(
-        `http://localhost:4000/api/comments/${type}/${commentId}`,
+        `https://tenantsync-backend.onrender.com/api/comments/${type}/${commentId}`,
         {},
         { withCredentials: true }
       );
@@ -127,7 +127,7 @@ const PropertyDetails = ({ user }) => {
     if (!editedContent.trim()) return;
     try {
       await axios.put(
-        `http://localhost:4000/api/comments/${commentId}`,
+        `https://tenantsync-backend.onrender.com/api/comments/${commentId}`,
         { content: editedContent },
         { withCredentials: true }
       );
@@ -142,7 +142,7 @@ const PropertyDetails = ({ user }) => {
   // Delete comment
   const handleDelete = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/comments/${commentId}`, {
+      await axios.delete(`https://tenantsync-backend.onrender.com/api/comments/${commentId}`, {
         withCredentials: true,
       });
       fetchComments();
@@ -159,7 +159,7 @@ const PropertyDetails = ({ user }) => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/wishlist",
+        "https://tenantsync-backend.onrender.com/api/wishlist",
         { userId, propertyId: property._id },
         { withCredentials: true }
       );
@@ -197,7 +197,7 @@ const PropertyDetails = ({ user }) => {
   // Main image url (fallback to placeholder if none)
   const mainImageUrl =
     property.mainImage && property.mainImage.trim()
-      ? `http://localhost:4000${property.mainImage}`
+      ? `https://tenantsync-backend.onrender.com${property.mainImage}`
       : null; // you can set a placeholder here if you have one
 
   return (
@@ -229,10 +229,10 @@ const PropertyDetails = ({ user }) => {
               {uniqueRoomImages.map((image, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:4000${image}`}
+                  src={`https://tenantsync-backend.onrender.com${image}`}
                   alt={`Room ${index + 1}`}
                   className="w-full h-48 object-cover rounded-lg border border-blue-200 shadow-sm cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => openImageModal(`http://localhost:4000${image}`)}
+                  onClick={() => openImageModal(`https://tenantsync-backend.onrender.com${image}`)}
                 />
               ))}
             </div>

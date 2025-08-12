@@ -8,7 +8,7 @@ const ReportForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:4000/api/reports", {
+    const res = await fetch("https://tenantsync-backend.onrender.com/api/reports", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

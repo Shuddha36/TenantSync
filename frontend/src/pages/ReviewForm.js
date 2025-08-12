@@ -15,7 +15,7 @@ export default function ReviewForm({ propertyId, userId, onReviewAdded }) {
       return;
     }
     try {
-      await axios.post("http://localhost:4000/api/reviews/add", {
+      await axios.post("https://tenantsync-backend.onrender.com/api/reviews/add", {
         propertyId,
         userId,
         rating,

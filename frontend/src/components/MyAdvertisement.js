@@ -12,7 +12,7 @@ export default function MyAdvertisement() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/properties", {
+        const res = await axios.get("https://tenantsync-backend.onrender.com/api/properties", {
           withCredentials: true,
         });
         setProperties(res.data.properties);
@@ -37,7 +37,7 @@ export default function MyAdvertisement() {
           >
             {p.mainImage && (
               <img
-                src={`http://localhost:4000${p.mainImage}`}
+                src={`https://tenantsync-backend.onrender.com${p.mainImage}`}
                 alt={p.houseName}
                 className="w-full h-40 object-cover rounded-md mb-3 group-hover:opacity-90 transition-opacity"
               />

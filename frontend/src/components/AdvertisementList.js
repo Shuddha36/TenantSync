@@ -10,7 +10,7 @@ export default function AdvertisementList() {
   useEffect(() => {
     async function fetchProperties() {
       try {
-        const res = await axios.get("http://localhost:4000/api/properties/");
+        const res = await axios.get("https://tenantsync-backend.onrender.com/api/properties/");
         setProperties(res.data.properties);
       } catch (error) {
         console.error("Error fetching properties", error);
@@ -33,7 +33,7 @@ export default function AdvertisementList() {
               borderRadius: "8px", 
               width: "250px" 
             }}>
-              <img src={`http://localhost:4000${property.image}`} alt={property.houseName} style={{ width: "100%", borderRadius: "4px" }} />
+              <img src={`https://tenantsync-backend.onrender.com${property.image}`} alt={property.houseName} style={{ width: "100%", borderRadius: "4px" }} />
               <h3 style={{ margin: "10px 0" }}>{property.houseName}</h3>
               <p>{property.address}</p>
               <p>

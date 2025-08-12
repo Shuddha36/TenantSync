@@ -65,7 +65,7 @@ export default function CreateAdvertisement() {
 
     try {
       await axios.post(
-        "http://localhost:4000/api/properties/create",
+        "https://tenantsync-backend.onrender.com/api/properties/create",
         formData,
         {
           

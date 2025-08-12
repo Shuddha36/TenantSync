@@ -33,7 +33,7 @@ export default function Register() {
     }
 
     try {
-      await axios.post("http://localhost:4000/api/auth/register", form);
+      await axios.post("https://tenantsync-backend.onrender.com/api/auth/register", form);
       setSuccess("Registered successfully! Now, login.");
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
