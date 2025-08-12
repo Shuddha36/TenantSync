@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
+
 const Wishlist = ({ user }) => {
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await fetch("/api/wishlist/" + user.id);
+        const response = await fetch(
+          `${API_BASE}/api/wishlist/${user.id}`,
+          { credentials: "include" }
+        );
         const data = await response.json();
         setWishlist(data);
       } catch (err) {
@@ -18,8 +24,9 @@ const Wishlist = ({ user }) => {
 
   const handleDelete = async (itemId) => {
     try {
-      await fetch("/api/wishlist/" + itemId, {
+      await fetch(`${API_BASE}/api/wishlist/${itemId}`, {
         method: "DELETE",
+        credentials: "include",
       });
       setWishlist((prev) => prev.filter((wish) => wish._id !== itemId));
     } catch (err) {

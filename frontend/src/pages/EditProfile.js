@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
+
 const EditProfile = ({ user }) => {
   const [profileData, setProfileData] = useState({
     username: "",
@@ -20,7 +23,9 @@ const EditProfile = ({ user }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/api/profile/" + user.id);
+        const response = await fetch(`${API_BASE}/api/profile/${user.id}`, {
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch profile data");
         }
@@ -58,11 +63,12 @@ const EditProfile = ({ user }) => {
     setError(null);
 
     try {
-      const response = await fetch("/api/profile/" + user.id, {
+      const response = await fetch(`${API_BASE}/api/profile/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(profileData), // Send profile data as JSON
       });
 
@@ -86,8 +92,9 @@ const EditProfile = ({ user }) => {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch("/api/profile/" + user.id, {
+      const response = await fetch(`${API_BASE}/api/profile/${user.id}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok) {

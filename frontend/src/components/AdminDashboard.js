@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
+axios.defaults.withCredentials = true;
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -17,7 +21,9 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("/api/admin/users");
+      const res = await axios.get(`${API_BASE}/api/admin/users`, {
+        withCredentials: true,
+      });
       setUsers(res.data.users);
     } catch (err) {
       console.error("Failed to fetch users:", err);
@@ -26,7 +32,9 @@ const AdminDashboard = () => {
 
   const fetchReports = async () => {
     try {
-      const res = await axios.get("/api/admin/reports");
+      const res = await axios.get(`${API_BASE}/api/admin/reports`, {
+        withCredentials: true,
+      });
       setReports(res.data.reports);
     } catch (err) {
       console.error("Failed to fetch reports:", err);
@@ -35,7 +43,9 @@ const AdminDashboard = () => {
 
   const deleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      await axios.delete(`/api/admin/users/${id}`);
+      await axios.delete(`${API_BASE}/api/admin/users/${id}`, {
+        withCredentials: true,
+      });
       fetchUsers(); // Refresh user list after deletion
     }
   };

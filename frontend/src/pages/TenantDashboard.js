@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 import MyRentalHistory from "../components/MyRentalHistory";
 import Wishlist from "../components/wishlist";
 
@@ -12,7 +15,7 @@ const TenantDashboard = ({ user }) => {
     if (!confirmLogout) return;
 
     try {
-      await fetch("/api/auth/logout", {
+      await fetch(`${API_BASE}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

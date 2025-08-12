@@ -1,6 +1,8 @@
 // src/pages/PropertyManagement.js
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 import CreateAdvertisement from "../components/CreateAdvertisement";
 import FlatApproval from "../components/FlatApproval";
 import MyAdvertisement from "../components/MyAdvertisement";
@@ -13,7 +15,7 @@ export default function PropertyManagement() {
   const handleLogout = async () => {
     if (!window.confirm("Are you sure you want to log out?")) return;
     try {
-      await fetch("/api/auth/logout", {
+  await fetch(`${API_BASE}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

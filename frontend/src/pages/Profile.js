@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
+
 const Profile = ({ user }) => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -10,7 +13,9 @@ const Profile = ({ user }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/api/profile/" + user.id);
+        const response = await fetch(`${API_BASE}/api/profile/${user.id}`, {
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch profile data");
         }
