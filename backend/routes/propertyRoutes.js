@@ -5,7 +5,8 @@ const propertyController = require("../controllers/propertyController");
 router.get("/owner", propertyController.getProperties);
 
 // POST endpoint to create a property advertisement with an image upload
-router.post("/create", propertyController.uploadPropertyImage, propertyController.createAdvertisement);
+router.post("/create", propertyController.uploadPropertyImages, propertyController.createAdvertisement);
+// Update the create route to use the new upload middleware
 
 // GET endpoint to retrieve properties (advertisements) for the owner
 router.get("/", propertyController.getProperties);

@@ -16,7 +16,8 @@ export default function CreateAdvertisement() {
     price: "", // NEW: Price of the flat
     description: "", // NEW: Description field
   });
-  const [image, setImage] = useState(null);
+  const [mainImage, setMainImage] = useState(null);
+  const [roomImages, setRoomImages] = useState([]);
   const [message, setMessage] = useState("");
   const handleChange = (e) => {
     setForm({
@@ -24,15 +25,25 @@ export default function CreateAdvertisement() {
       [e.target.name]: e.target.value,
     });
   };
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+  const handleMainImageChange = (e) => {
+    setMainImage(e.target.files[0]);
   };
+
+
+  const handleRoomImagesChange = (e) => {
+    // Convert FileList to array and limit to 3 files
+    const files = Array.from(e.target.files).slice(0, 3);
+    setRoomImages(files);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    
+  
+  
     formData.append("houseName", form.houseName);
     formData.append("address", form.address);
-    //contact
     formData.append("contact", form.contact);
     formData.append("rooms", form.rooms);
     formData.append("kitchens", form.kitchens);
@@ -40,17 +51,26 @@ export default function CreateAdvertisement() {
     formData.append("washrooms", form.washrooms);
     formData.append("squareFeet", form.squareFeet);
     formData.append("rentDays", form.rentDays);
-    formData.append("price", form.price); // NEW: append price
-    formData.append("description", form.description); // NEW: append description
-    if (image) {
-      formData.append("image", image);
+    formData.append("price", form.price);
+    formData.append("description", form.description);
+    
+    //append main image
+    if (mainImage) {
+      formData.append("mainImage", mainImage);
     }
+    // Append room images - all with same field name
+    roomImages.forEach((image) => {
+      formData.append("roomImages", image);
+    });
+
     try {
       await axios.post(
         "http://localhost:4000/api/properties/create",
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          
+          //headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         }
       );
       setMessage("Advertisement created successfully!");
@@ -201,18 +221,34 @@ export default function CreateAdvertisement() {
             placeholder="Enter Related description"
           />
         </div>
-        {/* House Image */}
+        
+        {/* Main Image Upload */}
         <div className="col-span-1 md:col-span-2 flex flex-col">
-          <label className="font-medium text-blue-700 mb-1">House Image</label>
+          <label className="font-medium text-blue-700 mb-1">Main Property Image</label>
           <input
-            name="image"
+            name="mainImage"
             type="file"
             accept="image/*"
-            onChange={handleImageChange}
+            onChange={handleMainImageChange}
             required
             className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-200 file:text-blue-800 hover:file:bg-blue-300 bg-white text-blue-900"
           />
         </div>
+        
+        {/* Room Images Upload */}
+        <div className="col-span-1 md:col-span-2 flex flex-col">
+          <label className="font-medium text-blue-700 mb-1">Room Images (up to 3)</label>
+          <input
+            name="roomImages"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleRoomImagesChange}
+            className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-200 file:text-blue-800 hover:file:bg-blue-300 bg-white text-blue-900"
+          />
+          <p className="text-xs text-blue-500 mt-1">You can select up to 3 images</p>
+        </div>
+
         {/* Submit Button */}
         <div className="col-span-1 md:col-span-2 flex justify-center mt-2">
           <button

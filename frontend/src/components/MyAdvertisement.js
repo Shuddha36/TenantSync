@@ -35,9 +35,9 @@ export default function MyAdvertisement() {
             onClick={() => navigate(`/properties/${p._id}`)}
             className="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow border border-blue-100 hover:border-blue-300 group"
           >
-            {p.image && (
+            {p.mainImage && (
               <img
-                src={`http://localhost:4000${p.image}`}
+                src={`http://localhost:4000${p.mainImage}`}
                 alt={p.houseName}
                 className="w-full h-40 object-cover rounded-md mb-3 group-hover:opacity-90 transition-opacity"
               />

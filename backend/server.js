@@ -59,7 +59,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Serve uploaded images statically
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // routes
 app.use("/api/auth", authRoutes);
