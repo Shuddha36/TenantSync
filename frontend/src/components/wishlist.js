@@ -51,8 +51,7 @@ const Wishlist = ({ user }) => {
             {wishlist.map((item) => (
               <div
                 key={item._id}
-                className="bg-white border border-blue-100 rounded-xl shadow hover:shadow-lg transition-shadow flex flex-col relative group cursor-pointer"
-                onClick={() => navigate(`/property/${item.property._id}`)}
+                className="bg-white border border-blue-100 rounded-xl shadow hover:shadow-lg transition-shadow flex flex-col relative group"
               >
                 <button
                   className="absolute top-3 right-3 bg-blue-100 hover:bg-blue-200 p-2 rounded-full transition-colors"
@@ -74,7 +73,11 @@ const Wishlist = ({ user }) => {
                   </svg>
                 </button>
                 <img
-                  src={item.property.mainImage?.startsWith("http") ? item.property.mainImage : `https://tenantsync-backend.onrender.com${item.property.mainImage}`}
+                  src={
+                    item.property.mainImage?.startsWith("http")
+                      ? item.property.mainImage
+                      : `${API_BASE}${item.property.mainImage || ""}`
+                  }
                   alt={item.property.houseName}
                   className="w-full h-44 object-cover rounded-t-xl bg-blue-100"
                 />
@@ -85,15 +88,29 @@ const Wishlist = ({ user }) => {
                   <p className="text-blue-500 text-sm mb-2 truncate">
                     {item.property.address}
                   </p>
-                  <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-center justify-between">
                     <span className="text-xs text-blue-400">
                       Rooms: {item.property.rooms}
                     </span>
                     {item.property.price && (
                       <span className="text-base font-semibold text-blue-700">
-                        ${item.property.price}
+                        {item.property.price}৳
                       </span>
                     )}
+                  </div>
+                  <div className="flex items-center gap-2 mt-3">
+                    <button
+                      className="px-3 py-1 rounded bg-blue-600 text-white text-sm hover:bg-blue-700"
+                      onClick={() => navigate(`/properties/${item.property._id}`)}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="px-3 py-1 rounded bg-red-500 text-white text-sm hover:bg-red-600"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
               </div>
