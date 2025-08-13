@@ -1,11 +1,11 @@
 // src/pages/PropertyManagement.js
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-const API_BASE =
-  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 import CreateAdvertisement from "../components/CreateAdvertisement";
 import FlatApproval from "../components/FlatApproval";
 import MyAdvertisement from "../components/MyAdvertisement";
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 
 export default function PropertyManagement() {
   const [activeTab, setActiveTab] = useState("create");

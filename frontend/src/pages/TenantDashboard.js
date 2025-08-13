@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const API_BASE =
-  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 import MyRentalHistory from "../components/MyRentalHistory";
 import Wishlist from "../components/wishlist";
+const API_BASE =
+  process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 
 const TenantDashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState("rentalHistory");
