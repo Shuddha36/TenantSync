@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE =
   process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
 
 const Wishlist = ({ user }) => {
   const [wishlist, setWishlist] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -49,7 +51,8 @@ const Wishlist = ({ user }) => {
             {wishlist.map((item) => (
               <div
                 key={item._id}
-                className="bg-white border border-blue-100 rounded-xl shadow hover:shadow-lg transition-shadow flex flex-col relative group"
+                className="bg-white border border-blue-100 rounded-xl shadow hover:shadow-lg transition-shadow flex flex-col relative group cursor-pointer"
+                onClick={() => navigate(`/property/${item.property._id}`)}
               >
                 <button
                   className="absolute top-3 right-3 bg-blue-100 hover:bg-blue-200 p-2 rounded-full transition-colors"
@@ -71,7 +74,7 @@ const Wishlist = ({ user }) => {
                   </svg>
                 </button>
                 <img
-                  src={item.property.mainImage}
+                  src={item.property.mainImage?.startsWith("http") ? item.property.mainImage : `https://tenantsync-backend.onrender.com${item.property.mainImage}`}
                   alt={item.property.houseName}
                   className="w-full h-44 object-cover rounded-t-xl bg-blue-100"
                 />

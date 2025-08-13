@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 axios.defaults.withCredentials = true;
-export default function CreateAdvertisement() {
+export default function CreateAdvertisement({ onCreated }) {
   const [form, setForm] = useState({
     houseName: "",
     address: "",
@@ -64,7 +64,7 @@ export default function CreateAdvertisement() {
     });
 
     try {
-      await axios.post(
+  await axios.post(
         "https://tenantsync-backend.onrender.com/api/properties/create",
         formData,
         {
@@ -72,8 +72,10 @@ export default function CreateAdvertisement() {
           //headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         }
-      );
-      setMessage("Advertisement created successfully!");
+  );
+  alert("Advertisement created successfully!");
+  setMessage("");
+  if (typeof onCreated === "function") onCreated();
     } catch (err) {
       setMessage("Error creating advertisement.");
     }
@@ -232,11 +234,7 @@ export default function CreateAdvertisement() {
           </button>
         </div>
       </form>
-      {message && (
-        <p className="mt-6 text-center font-semibold text-blue-700">
-          {message}
-        </p>
-      )}
+  {/* Success is shown via alert; keep inline messages empty */}
     </div>
   );
 }

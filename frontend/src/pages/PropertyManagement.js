@@ -71,7 +71,9 @@ export default function PropertyManagement() {
       {/* Main Content */}
       <main className="flex-1 p-8 flex flex-col items-center justify-start">
         <div className="w-full max-w-3xl bg-white rounded-lg shadow p-6 min-h-[400px]">
-          {activeTab === "create" && <CreateAdvertisement />}
+          {activeTab === "create" && (
+            <CreateAdvertisement onCreated={() => setActiveTab("myAds")} />
+          )}
           {activeTab === "myAds" && <MyAdvertisement />}
           {activeTab === "approval" && <FlatApproval />}
         </div>
