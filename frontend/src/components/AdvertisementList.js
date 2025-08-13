@@ -33,7 +33,7 @@ export default function AdvertisementList() {
               borderRadius: "8px", 
               width: "250px" 
             }}>
-              <img src={`https://tenantsync-backend.onrender.com${property.image}`} alt={property.houseName} style={{ width: "100%", borderRadius: "4px" }} />
+              <img src={property.image?.startsWith("http") ? property.image : `https://tenantsync-backend.onrender.com${property.image}`} alt={property.houseName} style={{ width: "100%", borderRadius: "4px" }} />
               <h3 style={{ margin: "10px 0" }}>{property.houseName}</h3>
               <p>{property.address}</p>
               <p>

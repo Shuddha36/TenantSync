@@ -31,7 +31,7 @@ const PropertyCard = ({ property }) => {
       {/* Property Image and Link to Details */}
       <Link to={`/property/${property._id}`} className="block">
         <img
-          src={`https://tenantsync-backend.onrender.com${property.mainImage}`}
+          src={property.mainImage?.startsWith("http") ? property.mainImage : `https://tenantsync-backend.onrender.com${property.mainImage}`}
           alt="Flat"
           className="w-full h-48 object-cover rounded-t-2xl bg-blue-100"
         />

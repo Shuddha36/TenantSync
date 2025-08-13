@@ -37,7 +37,7 @@ export default function MyAdvertisement() {
           >
             {p.mainImage && (
               <img
-                src={`https://tenantsync-backend.onrender.com${p.mainImage}`}
+                src={p.mainImage.startsWith("http") ? p.mainImage : `https://tenantsync-backend.onrender.com${p.mainImage}`}
                 alt={p.houseName}
                 className="w-full h-40 object-cover rounded-md mb-3 group-hover:opacity-90 transition-opacity"
               />

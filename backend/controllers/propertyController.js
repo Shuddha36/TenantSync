@@ -4,18 +4,38 @@ const RentalRequest = require("../models/RentalRequest");
 const Notification = require("../models/Notification");
 const multer = require("multer");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
 
-// Image upload setup (optional, for testing only)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    // Use Date.now() + original extension as filename
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+// Configure Cloudinary using environment variables
+// Required: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// Use in-memory storage; we'll stream buffers to Cloudinary
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
+// Helper: upload a buffer to Cloudinary and return secure_url
+const uploadBufferToCloudinary = (buffer, filename, folder = "properties") => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: "image",
+        public_id: filename ? path.parse(filename).name : undefined,
+        overwrite: true,
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result.secure_url);
+      }
+    );
+    uploadStream.end(buffer);
+  });
+};
 
 
 // Create a new advertisement (property)
@@ -41,13 +61,26 @@ exports.createAdvertisement = async (req, res) => {
     // Safely handle req.files (multer)
     const files = req.files || {};
 
-    const mainImage = files.mainImage && files.mainImage[0]
-      ? `/uploads/${files.mainImage[0].filename}`
-      : "";
+    // Upload main image to Cloudinary if provided
+    let mainImage = "";
+    if (files.mainImage && files.mainImage[0]) {
+      const f = files.mainImage[0];
+      mainImage = await uploadBufferToCloudinary(
+        f.buffer,
+        f.originalname,
+        "properties"
+      );
+    }
 
-    const roomImages = files.roomImages
-      ? files.roomImages.map(file => `/uploads/${file.filename}`)
-      : [];
+    // Upload room images (limit handled by multer fields)
+    let roomImages = [];
+    if (files.roomImages && files.roomImages.length) {
+      roomImages = await Promise.all(
+        files.roomImages.map((f) =>
+          uploadBufferToCloudinary(f.buffer, f.originalname, "properties")
+        )
+      );
+    }
 
     // Deduplicate (safety)
     const uniqueRoomImages = Array.from(new Set(roomImages));
@@ -63,8 +96,7 @@ exports.createAdvertisement = async (req, res) => {
       washrooms,
       squareFeet,
       description,
-      price,     
-      price,
+  price,     
       mainImage,
       roomImages: uniqueRoomImages,
       owner: ownerId,

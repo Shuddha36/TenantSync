@@ -205,10 +205,11 @@ const PropertyDetails = ({ user }) => {
   const uniqueRoomImages = Array.from(new Set(property.roomImages || []));
 
   // Main image url (fallback to placeholder if none)
-  const mainImageUrl =
-    property.mainImage && property.mainImage.trim()
-      ? `https://tenantsync-backend.onrender.com${property.mainImage}`
-      : null; // you can set a placeholder here if you have one
+  const mainImageUrl = (() => {
+    const img = property.mainImage && property.mainImage.trim();
+    if (!img) return null;
+    return img.startsWith("http") ? img : `https://tenantsync-backend.onrender.com${img}`;
+  })(); // you can set a placeholder here if you have one
 
   return (
     <div className="bg-blue-50 min-h-screen py-10 px-2">
@@ -239,15 +240,15 @@ const PropertyDetails = ({ user }) => {
               {uniqueRoomImages.map((image, index) => (
                 <img
                   key={index}
-                  src={`https://tenantsync-backend.onrender.com${image}`}
+                  src={image.startsWith("http") ? image : `https://tenantsync-backend.onrender.com${image}`}
                   alt={`Room ${index + 1}`}
                   className="w-full h-48 object-cover rounded-lg border border-blue-200 shadow-sm cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() =>
-                    openImageModal(`https://tenantsync-backend.onrender.com${image}`, {
-                      width: "90vw",
-                      height: "85vh",
-                    })
-                  }
+                  onClick={() => {
+                    const url = image.startsWith("http")
+                      ? image
+                      : `https://tenantsync-backend.onrender.com${image}`;
+                    openImageModal(url, { width: "90vw", height: "85vh" });
+                  }}
                 />
               ))}
             </div>
