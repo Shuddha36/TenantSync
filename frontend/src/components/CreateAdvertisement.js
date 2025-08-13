@@ -19,6 +19,7 @@ export default function CreateAdvertisement({ onCreated }) {
   const [mainImage, setMainImage] = useState(null);
   const [roomImages, setRoomImages] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -38,6 +39,7 @@ export default function CreateAdvertisement({ onCreated }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
     
   
@@ -78,6 +80,8 @@ export default function CreateAdvertisement({ onCreated }) {
   if (typeof onCreated === "function") onCreated();
     } catch (err) {
       setMessage("Error creating advertisement.");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -228,9 +232,17 @@ export default function CreateAdvertisement({ onCreated }) {
         <div className="col-span-1 md:col-span-2 flex justify-center mt-2">
           <button
             type="submit"
-            className="px-8 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-full font-semibold shadow hover:from-blue-700 hover:to-blue-500 transition-all duration-200"
+            disabled={loading}
+            className={`px-8 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-full font-semibold shadow hover:from-blue-700 hover:to-blue-500 transition-all duration-200 ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
           >
-            Save
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span className="inline-block w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" aria-hidden="true"></span>
+                Saving...
+              </span>
+            ) : (
+              "Save"
+            )}
           </button>
         </div>
       </form>
