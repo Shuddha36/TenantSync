@@ -23,6 +23,8 @@ const PropertyDetails = ({ user }) => {
   const [reviewsRefresh, setReviewsRefresh] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
+  // Optional modal size (CSS max sizes); defaults keep image within viewport
+  const [modalImageSize, setModalImageSize] = useState({ width: "90vw", height: "85vh" });
 
   // Fetch reviews for this property
   const fetchReviews = async () => {
@@ -171,8 +173,16 @@ const PropertyDetails = ({ user }) => {
   };
 
   // Image modal functions
-  const openImageModal = (imageUrl) => {
+  const openImageModal = (imageUrl, size) => {
     setSelectedImage(imageUrl);
+    if (size?.width || size?.height) {
+      setModalImageSize({
+        width: size.width || "90vw",
+        height: size.height || "85vh",
+      });
+    } else {
+      setModalImageSize({ width: "90vw", height: "85vh" });
+    }
     setShowImageModal(true);
   };
 
@@ -213,7 +223,7 @@ const PropertyDetails = ({ user }) => {
             src={mainImageUrl}
             alt={property.houseName}
             className="w-full rounded-lg mb-4 border border-blue-200 shadow-sm object-cover max-h-96 cursor-pointer hover:opacity-90 transition-opacity"
-            onClick={() => openImageModal(mainImageUrl)}
+            onClick={() => openImageModal(mainImageUrl, { width: "90vw", height: "85vh" })}
           />
         ) : (
           <div className="w-full h-56 rounded-lg mb-4 border border-blue-200 shadow-sm bg-blue-100 flex items-center justify-center text-blue-400">
@@ -232,7 +242,12 @@ const PropertyDetails = ({ user }) => {
                   src={`https://tenantsync-backend.onrender.com${image}`}
                   alt={`Room ${index + 1}`}
                   className="w-full h-48 object-cover rounded-lg border border-blue-200 shadow-sm cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => openImageModal(`https://tenantsync-backend.onrender.com${image}`)}
+                  onClick={() =>
+                    openImageModal(`https://tenantsync-backend.onrender.com${image}`, {
+                      width: "90vw",
+                      height: "85vh",
+                    })
+                  }
                 />
               ))}
             </div>
@@ -465,7 +480,8 @@ const PropertyDetails = ({ user }) => {
             <img
               src={selectedImage}
               alt="Full size view"
-              className="max-w-full max-h-full object-contain rounded-lg"
+              className="object-contain rounded-lg"
+              style={{ maxWidth: modalImageSize.width, maxHeight: modalImageSize.height }}
               onClick={(e) => e.stopPropagation()}
             />
           </div>
