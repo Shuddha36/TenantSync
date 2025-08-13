@@ -21,12 +21,17 @@ const upload = multer({ storage });
 // Helper: upload a buffer to Cloudinary and return secure_url
 const uploadBufferToCloudinary = (buffer, filename, folder = "properties") => {
   return new Promise((resolve, reject) => {
+    const baseName = filename ? path.parse(filename).name : "upload";
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const publicId = `${baseName}-${uniqueSuffix}`;
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder,
         resource_type: "image",
-        public_id: filename ? path.parse(filename).name : undefined,
-        overwrite: true,
+        // Ensure uniqueness to prevent overwrites when filenames repeat
+        public_id: publicId,
+        overwrite: false,
       },
       (error, result) => {
         if (error) return reject(error);
