@@ -257,13 +257,11 @@ const PropertyDetails = ({ user }) => {
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-blue-700 font-semibold">Address:</p>
-            <p className="text-blue-800 mb-2">{property.address}</p>
 
             <p className="text-blue-700 font-semibold">Owner:</p>
             <p className="text-blue-800 mb-2">{property.owner?.username ?? "Unknown"}</p>
 
-            <p className="text-blue-700 font-semibold">Urgent Contact:</p>
+            <p className="text-blue-700 font-semibold">Contact:</p>
             <p className="text-blue-800 mb-2">{property.contact}</p>
 
             <p className="text-blue-700 font-semibold">Price:</p>
@@ -271,18 +269,23 @@ const PropertyDetails = ({ user }) => {
           </div>
 
           <div>
-            <p className="text-blue-700 font-semibold">Total Rooms:</p>
+            <p className="text-blue-700 font-semibold">Rooms:</p>
             <p className="text-blue-800 mb-2">{property.rooms}</p>
 
             <p className="text-blue-700 font-semibold">Washrooms:</p>
             <p className="text-blue-800 mb-2">{property.washrooms}</p>
 
-            <p className="text-blue-700 font-semibold">Bedrooms:</p>
-            <p className="text-blue-800 mb-2">{property.bedrooms}</p>
-
             <p className="text-blue-700 font-semibold">Square Feet:</p>
             <p className="text-blue-800 mb-2">{property.squareFeet}</p>
           </div>
+        </div>
+
+        {/* Adress */}
+        <div className="mb-4">
+          <p className="text-blue-700 font-semibold">Adress:</p>
+          <p className="text-blue-800 bg-blue-50 p-3 rounded-lg border border-blue-100 italic">
+            {property.address || "No adress provided."}
+          </p>
         </div>
 
         {/* Description */}
