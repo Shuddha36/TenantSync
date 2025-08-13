@@ -435,21 +435,6 @@ const PropertyDetails = ({ user }) => {
                   >
                     Reply
                   </span>
-                  <span
-                    className="cursor-pointer text-yellow-700 hover:text-yellow-800"
-                    onClick={() => {
-                      setEditingCommentId(c._id);
-                      setEditedContent(c.content);
-                    }}
-                  >
-                    Edit
-                  </span>
-                  <span
-                    className="cursor-pointer text-red-500 hover:text-red-700"
-                    onClick={() => handleDelete(c._id)}
-                  >
-                    Delete
-                  </span>
                 </div>
 
                 {c.replies?.map((r) => (
