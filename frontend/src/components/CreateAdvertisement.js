@@ -139,34 +139,7 @@ export default function CreateAdvertisement() {
             min="0"
           />
         </div>
-        {/* Kitchens */}
-        <div className="flex flex-col">
-          <label className="font-medium text-blue-700 mb-1">Kitchens</label>
-          <input
-            name="kitchens"
-            type="number"
-            value={form.kitchens}
-            onChange={handleChange}
-            required
-            className="px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-blue-900 placeholder-blue-300"
-            placeholder="0"
-            min="0"
-          />
-        </div>
-        {/* Bedrooms */}
-        <div className="flex flex-col">
-          <label className="font-medium text-blue-700 mb-1">Bedrooms</label>
-          <input
-            name="bedrooms"
-            type="number"
-            value={form.bedrooms}
-            onChange={handleChange}
-            required
-            className="px-4 py-2 border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-blue-900 placeholder-blue-300"
-            placeholder="0"
-            min="0"
-          />
-        </div>
+
         {/* Washrooms */}
         <div className="flex flex-col">
           <label className="font-medium text-blue-700 mb-1">Washrooms</label>
@@ -224,7 +197,7 @@ export default function CreateAdvertisement() {
         
         {/* Main Image Upload */}
         <div className="col-span-1 md:col-span-2 flex flex-col">
-          <label className="font-medium text-blue-700 mb-1">Main Property Image</label>
+          <label className="font-medium text-blue-700 mb-1">Cover Image</label>
           <input
             name="mainImage"
             type="file"
