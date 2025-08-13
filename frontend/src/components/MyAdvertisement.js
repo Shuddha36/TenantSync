@@ -23,6 +23,19 @@ export default function MyAdvertisement() {
     fetchProperties();
   }, []);
 
+  const handleRemove = async (id) => {
+    if (!window.confirm("Are you sure you want to remove this property?")) return;
+    try {
+      await axios.delete(`https://tenantsync-backend.onrender.com/api/properties/${id}`, {
+        withCredentials: true,
+      });
+      setProperties((prev) => prev.filter((p) => p._id !== id));
+    } catch (err) {
+      console.error("Failed to delete property:", err);
+      alert("Failed to delete property. Please try again.");
+    }
+  };
+
   return (
     <div className="w-full">
       <h2 className="text-2xl font-semibold text-blue-900 mb-8 text-center tracking-tight">
@@ -32,8 +45,7 @@ export default function MyAdvertisement() {
         {properties.map((p) => (
           <div
             key={p._id}
-            onClick={() => navigate(`/properties/${p._id}`)}
-            className="cursor-pointer bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow border border-blue-100 hover:border-blue-300 group"
+            className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow border border-blue-100 hover:border-blue-300 group"
           >
             {p.mainImage && (
               <img
@@ -47,6 +59,20 @@ export default function MyAdvertisement() {
             </h3>
             <p className="text-sm text-blue-600 mb-1 truncate">{p.address}</p>
             <p className="font-semibold text-blue-700">Price: {p.price}৳</p>
+            <div className="mt-3 flex items-center gap-2">
+              <button
+                onClick={() => navigate(`/properties/${p._id}`)}
+                className="px-3 py-1 rounded bg-blue-600 text-white text-sm hover:bg-blue-700"
+              >
+                View
+              </button>
+              <button
+                onClick={() => handleRemove(p._id)}
+                className="px-3 py-1 rounded bg-red-500 text-white text-sm hover:bg-red-600"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
       </div>

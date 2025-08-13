@@ -37,6 +37,19 @@ const uploadBufferToCloudinary = (buffer, filename, folder = "properties") => {
   });
 };
 
+// Helper: extract Cloudinary public_id from a secure URL
+// Example: https://res.cloudinary.com/<cloud>/image/upload/v1699999999/properties/my-img.jpg
+// Returns: properties/my-img
+const extractPublicIdFromUrl = (url) => {
+  if (!url || typeof url !== "string") return null;
+  try {
+    const match = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+(?:\?.*)?$/);
+    return match && match[1] ? match[1] : null;
+  } catch {
+    return null;
+  }
+};
+
 
 // Create a new advertisement (property)
 exports.createAdvertisement = async (req, res) => {
@@ -246,3 +259,43 @@ exports.getPropertyById = async (req, res) => {
 
 // Optional image upload export
 exports.uploadPropertyImage = upload.single("image");
+
+// Delete property (owner only). Attempts to clean up Cloudinary images if URLs are Cloudinary.
+exports.deleteProperty = async (req, res) => {
+  try {
+    const ownerId = req.session.user && req.session.user.id;
+    if (!ownerId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const { id } = req.params;
+    const property = await Property.findById(id);
+    if (!property) return res.status(404).json({ error: "Property not found" });
+    if (property.owner.toString() !== ownerId) {
+      return res.status(403).json({ error: "Not authorized to delete this property" });
+    }
+
+    // Best-effort Cloudinary cleanup (if URLs are Cloudinary)
+    const images = [];
+    if (property.mainImage && property.mainImage.startsWith("http")) images.push(property.mainImage);
+    if (Array.isArray(property.roomImages)) {
+      property.roomImages.forEach((u) => {
+        if (u && typeof u === "string" && u.startsWith("http")) images.push(u);
+      });
+    }
+
+    const publicIds = images
+      .map(extractPublicIdFromUrl)
+      .filter(Boolean);
+
+    if (publicIds.length) {
+      await Promise.allSettled(
+        publicIds.map((pid) => cloudinary.uploader.destroy(pid).catch(() => null))
+      );
+    }
+
+    await property.deleteOne();
+    res.json({ message: "Property deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete property" });
+  }
+};

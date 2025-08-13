@@ -26,5 +26,8 @@ router.get("/search", propertyController.searchProperties);
 // **New**: GET endpoint to fetch a single property by ID
 router.get("/:id", propertyController.getPropertyById);
 
+// Delete property by ID (owner only)
+router.delete("/:id", propertyController.deleteProperty);
+
 
 module.exports = router;
