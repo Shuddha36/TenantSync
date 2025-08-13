@@ -6,8 +6,6 @@ const propertySchema = new mongoose.Schema({
   address: { type: String, required: true },
   contact: {type: String, required: true},
   rooms: { type: Number, required: true },
-  kitchens: { type: Number, required: true },
-  bedrooms: { type: Number, required: true },
   washrooms: { type: Number, required: true },
   squareFeet: { type: Number, required: true },
   price: { type: Number, required: true },
