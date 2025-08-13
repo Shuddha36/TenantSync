@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, HeartOff } from "lucide-react";
 
 const API_BASE =
   process.env.REACT_APP_API_BASE || "https://tenantsync-backend.onrender.com";
@@ -80,18 +81,24 @@ const Wishlist = ({ user }) => {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 mt-3">
+                  <div className="flex items-center gap-3 mt-4">
                     <button
-                      className="px-3 py-1 rounded bg-blue-600 text-white text-sm hover:bg-blue-700"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm sm:text-base hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-colors"
                       onClick={() => navigate(`/properties/${item.property._id}`)}
+                      aria-label="View property details"
+                      title="View details"
                     >
-                      View
+                      <Eye className="w-4 h-4" />
+                      <span>View</span>
                     </button>
                     <button
-                      className="ml-auto px-3 py-1 rounded bg-red-500 text-white text-sm hover:bg-red-600"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-red-500 text-white text-sm sm:text-base hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-400 transition-colors"
                       onClick={() => handleDelete(item._id)}
+                      aria-label="Remove from wishlist"
+                      title="Remove from wishlist"
                     >
-                      Remove
+                      <HeartOff className="w-4 h-4" />
+                      <span>Remove</span>
                     </button>
                   </div>
                 </div>
